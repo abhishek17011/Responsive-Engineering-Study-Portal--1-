@@ -1,26 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>BAMU PYQ NEP | Engineer Vault</title>
+  <title>BAMU NEP PYQ | Engineer Vault</title>
 
   <!-- CSS -->
   <link rel="icon" type="image/webp" href="images/bamu%20logo.webp">
   <link rel="stylesheet" href="style.css">
 
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+
   <!-- Font Awesome -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js")
+    .then(() => console.log("Service Worker Registered"));
+}
+</script>
 
 <body>
 
   <marquee behavior="scroll" direction="left" class="top-notice">
-    This website is created for students and is intended only for study purposes. It aims to support learners with easy access to helpful academic resources.
+    This website is created for students and is intended only for study purposes. It aims to support learners with easy
+    access to helpful academic resources.
   </marquee>
 
   <!-- ========================= -->
@@ -43,73 +52,74 @@
         <li><a href="#footer">Contact</a></li>
       </ul>
 
-      <button type="button" class="menu-btn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navbar-links">
+      <button type="button" class="menu-btn" aria-label="Toggle navigation menu" aria-expanded="false"
+        aria-controls="navbar-links">
         <i class="fa-solid fa-bars"></i>
       </button>
-      
+
 
     </nav>
   </header>
 
 
   <!-- ========================= -->
-<!-- HERO SECTION -->
-<!-- ========================= -->
+  <!-- HERO SECTION -->
+  <!-- ========================= -->
 
-<section class="hero" id="home">
+  <section class="hero" id="home">
 
-  <div class="hero-content">
+    <div class="hero-content">
 
-    <!-- Marquee -->
+      <!-- Marquee -->
 
-    <marquee behavior="scroll" direction="left" class="marquee">
+      <marquee behavior="scroll" direction="left" class="marquee">
 
-      Welcome to Engineer Vault 🚀 |
-      Get Branch-wise & Year-wise Notes, PYQs and Syllabus Easily |
-      Your Engineering Study Partner 📚
+        Welcome to Engineer Vault 🚀 |
+        Get Branch-wise & Year-wise Notes, PYQs and Syllabus Easily |
+        Your Engineering Study Partner 📚
 
-    </marquee>
+      </marquee>
 
 
-    <h1>
-      Welcome To Engineer Vault
-    </h1>
+      <h1>
+        Welcome To Engineer Vault
+      </h1>
 
-    <p class="hero-para">
-      <strong>Engineer Vault</strong> is your one-stop station for Notes, PYQs,
-      and Syllabus based on the new NEP curriculum.
+      <p class="hero-para">
+        <strong>Engineer Vault</strong> is your one-stop station for Notes, PYQs,
+        and Syllabus based on the new NEP curriculum.
 
-      This platform is focused on helping engineering students find study resources
-      quickly in one organized place.
+        This platform is focused on helping engineering students find study resources
+        quickly in one organized place.
 
-      The website is still under process, and more subjects, files, and updates
-      will be added step by step.
-    </p>
+        The website is still under process, and more subjects, files, and updates
+        will be added step by step.
+      </p>
 
-    <p class="hero-para hidden">
+      <p class="hero-para hidden">
 
-      Welcome to <strong>Engineer Vault</strong> — a platform specially designed
-      for Engineering Students to access Notes, PYQs and Syllabus easily in one place.
+        Welcome to <strong>Engineer Vault</strong> — a platform specially designed
+        for Engineering Students to access Notes, PYQs and Syllabus easily in one place.
 
-      We understand how difficult it becomes to search different websites and resources
-      before exams. That’s why this platform helps students with organized
-      Branch-wise and Year-wise study materials.
+        We understand how difficult it becomes to search different websites and resources
+        before exams. That’s why this platform helps students with organized
+        Branch-wise and Year-wise study materials.
 
-      Whether you are preparing for Semester Exams, Sessionals, Viva or Placements,
-      Engineer Vault is here to support your learning journey 🚀
+        Whether you are preparing for Semester Exams, Sessionals, Viva or Placements,
+        Engineer Vault is here to support your learning journey 🚀
 
-      Learn smarter, stay consistent and keep growing as a future engineer 💙
+        Learn smarter, stay consistent and keep growing as a future engineer 💙
 
-    </p>
+      </p>
 
-    <div class="hero-logo-block">
-      <p>Last updated on May 22, 2026</p>
-      <img src="images/bamu%20logo.webp" alt="BAMU logo">
+      <div class="hero-logo-block">
+        <p>Last updated on May 22, 2026</p>
+        <img src="images/bamu%20logo.webp" alt="BAMU logo">
+      </div>
+
     </div>
 
-  </div>
-
-</section>
+  </section>
 
 
   <!-- ========================= -->
@@ -992,4 +1002,5 @@
   <script src="script.js"></script>
 
 </body>
+
 </html>
