@@ -1,0 +1,7 @@
+Engineer Vault - Thermodynamics Notes
+
+Subject: Thermodynamics
+Resource: Notes
+Year: 1st Year
+
+This is a sample notes file for Thermodynamics. Replace this file with your actual class notes.

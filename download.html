@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download Resource | Engineer Vault</title>
+  <link rel="icon" type="image/webp" href="images/bamu%20logo.webp">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Engineer Vault</div>
+      <ul class="nav-links active" id="navbar-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#branches">Branches</a></li>
+        <li><a href="index.html#resources">Resources</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="download-page">
+    <div class="download-card">
+      <h1 id="page-title">Resource Download</h1>
+      <p id="page-desc">Please wait while we load your selected resource.</p>
+      <div id="download-controls" class="download-controls"></div>
+      <div id="download-grid" class="download-grid"></div>
+      <noscript>
+        <div class="no-js-warning">
+          JavaScript must be enabled to load downloads. Refresh the page after enabling scripts.
+        </div>
+      </noscript>
+      <a class="back-link" href="index.html#branches">← Back to Study Portal</a>
+    </div>
+  </section>
+
+  <script>
+    const data = {
+      "Engineering Mathematics": {
+        notes: { label: "Download Engineering Mathematics Notes", file: "notes/engineering-mathematics-notes.txt" },
+        pyq: { label: "Download Engineering Mathematics PYQ", file: "pyq/engineering-mathematics-pyq.txt" },
+        syllabus: { label: "Download Engineering Mathematics Syllabus", file: "syllabus/engineering-mathematics-syllabus.txt" }
+      },
+      Physics: {
+        // syllabus: { label: "Download Physics Syllabus", file: "syllabus/physics-syllabus.txt" }
+      },
+      "Data Structures": {
+        notes: { label: "Download Data Structures Notes", file: "notes/data-structures-notes.txt" },
+        pyq: { label: "Download Data Structures PYQ", file: "pyq/data-structures-pyq.txt" },
+        syllabus: { label: "Download Data Structures Syllabus", file: "syllabus/data-structures-syllabus.txt" }
+      },
+      DBMS: {
+        notes: { label: "Download DBMS Notes", file: "notes/dbms-notes.txt" },
+        pyq: { label: "Download DBMS PYQ", file: "pyq/dbms-pyq.txt" },
+        syllabus: { label: "Download DBMS Syllabus", file: "syllabus/dbms-syllabus.txt" }
+      },
+      "Programming in C": {
+        notes: { label: "Download Programming in C Notes", file: "notes/programming-in-c-notes.txt" },
+        pyq: { label: "Download Programming in C PYQ", file: "pyq/programming-in-c-pyq.txt" },
+        syllabus: { label: "Download Programming in C Syllabus", file: "syllabus/programming-in-c-syllabus.txt" }
+      },
+      "Basic Electronics": {
+        notes: { label: "Download Basic Electronics Notes", file: "notes/basic-electronics-notes.txt" },
+        pyq: { label: "Download Basic Electronics PYQ", file: "pyq/basic-electronics-pyq.txt" },
+        syllabus: { label: "Download Basic Electronics Syllabus", file: "syllabus/basic-electronics-syllabus.txt" }
+      },
+      "Engineering Mechanics": {
+        notes: { label: "Download Engineering Mechanics Notes", file: "notes/engineering-mechanics-notes.txt" },
+        pyq: { label: "Download Engineering Mechanics PYQ", file: "pyq/engineering-mechanics-pyq.txt" },
+        syllabus: { label: "Download Engineering Mechanics Syllabus", file: "syllabus/engineering-mechanics-syllabus.txt" }
+      },
+      Thermodynamics: {
+        notes: { label: "Download Thermodynamics Notes", file: "notes/thermodynamics-notes.txt" },
+        pyq: { label: "Download Thermodynamics PYQ", file: "pyq/thermodynamics-pyq.txt" },
+        syllabus: { label: "Download Thermodynamics Syllabus", file: "syllabus/thermodynamics-syllabus.txt" }
+      }
+    };
+
+    const params = new URLSearchParams(location.search);
+    let subject = params.get('subject');
+    let selectedType = params.get('type');
+    const title = document.getElementById('page-title');
+    const desc = document.getElementById('page-desc');
+    const controls = document.getElementById('download-controls');
+    const grid = document.getElementById('download-grid');
+    const types = ['notes', 'pyq', 'syllabus'];
+    const typeLabels = { notes: 'Notes', pyq: 'PYQ', syllabus: 'Syllabus' };
+    const subjects = Object.keys(data);
+
+    function updateUrl(nextSubject, nextType) {
+      const newParams = new URLSearchParams();
+      if (nextSubject) newParams.set('subject', nextSubject);
+      if (nextType) newParams.set('type', nextType);
+      const newUrl = `${location.pathname}?${newParams.toString()}`;
+      window.history.replaceState(null, '', newUrl);
+      subject = nextSubject || null;
+      selectedType = nextType || null;
+      renderPage();
+    }
+
+    function setMessage(message) {
+      desc.textContent = message;
+      controls.innerHTML = '';
+      grid.innerHTML = '';
+    }
+
+    function createRow(resourceType, resource, isSelected) {
+      const row = document.createElement('div');
+      row.className = 'download-row' + (isSelected ? ' selected' : '');
+
+      const info = document.createElement('div');
+      info.className = 'download-row-info';
+      const heading = document.createElement('h3');
+      const icon = document.createElement('span');
+      icon.className = 'subject-icon';
+      icon.textContent = '⬇';
+      heading.textContent = `${subject} — ${typeLabels[resourceType]}`;
+      heading.prepend(icon);
+      const paragraph = document.createElement('p');
+      if (resource) {
+        paragraph.textContent = `Click the download button to get the ${typeLabels[resourceType]} file for this subject.`;
+      } else {
+        paragraph.textContent = 'Not available. Coming soon. Stay tuned.';
+        paragraph.className = 'download-row-error';
+      }
+      info.appendChild(heading);
+      info.appendChild(paragraph);
+
+      const action = document.createElement('div');
+      action.className = 'download-row-action';
+
+      if (resource) {
+        const link = document.createElement('a');
+        link.href = resource.file;
+        link.textContent = resource.label;
+        link.className = 'download-btn';
+        link.setAttribute('download', resource.file);
+        action.appendChild(link);
+      } else {
+        const label = document.createElement('span');
+        label.className = 'download-missing';
+        label.textContent = 'Coming soon';
+        action.appendChild(label);
+      }
+
+      row.appendChild(info);
+      row.appendChild(action);
+      return row;
+    }
+
+    function createSubjectCard(subjectName) {
+      const card = document.createElement('div');
+      card.className = 'subject-card';
+
+      const heading = document.createElement('h3');
+      heading.textContent = subjectName;
+      const paragraph = document.createElement('p');
+      paragraph.textContent = 'View notes, PYQs, and syllabus for this subject and download what you need.';
+
+      const action = document.createElement('div');
+      action.className = 'subject-card-action';
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'download-btn';
+      button.textContent = 'Open resources';
+      button.addEventListener('click', () => updateUrl(subjectName, null));
+      action.appendChild(button);
+
+      card.appendChild(heading);
+      card.appendChild(paragraph);
+      card.appendChild(action);
+      return card;
+    }
+
+    function renderSubjectSelector() {
+      const selectWrapper = document.createElement('div');
+      selectWrapper.className = 'download-select-wrapper';
+      const select = document.createElement('select');
+      select.className = 'download-select';
+      select.setAttribute('aria-label', 'Select subject');
+
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.textContent = 'Choose a subject...';
+      select.appendChild(defaultOption);
+
+      subjects.forEach(name => {
+        const option = document.createElement('option');
+        option.value = name;
+        option.textContent = name;
+        if (name === subject) option.selected = true;
+        select.appendChild(option);
+      });
+
+      select.addEventListener('change', event => {
+        const nextSubject = event.target.value;
+        updateUrl(nextSubject || null, null);
+      });
+
+      selectWrapper.appendChild(select);
+      controls.appendChild(selectWrapper);
+    }
+
+    function renderTypeFilters() {
+      const toolbar = document.createElement('div');
+      toolbar.className = 'type-buttons';
+      types.forEach(type => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'type-button' + (selectedType === type ? ' active' : '');
+        button.textContent = typeLabels[type];
+        button.addEventListener('click', () => updateUrl(subject, selectedType === type ? null : type));
+        toolbar.appendChild(button);
+      });
+      controls.appendChild(toolbar);
+    }
+
+    function renderPage() {
+      controls.innerHTML = '';
+      grid.innerHTML = '';
+
+      if (!subject) {
+        title.textContent = 'Choose a Subject';
+        desc.textContent = 'Select a subject below to see available downloads for notes, PYQ, and syllabus files.';
+        renderSubjectSelector();
+        subjects.forEach(subjectName => grid.appendChild(createSubjectCard(subjectName)));
+        return;
+      }
+
+      if (!data[subject]) {
+        title.textContent = 'Subject Not Found';
+        desc.textContent = 'We could not find the selected subject. Pick one of the available subjects below.';
+        renderSubjectSelector();
+        subjects.forEach(subjectName => grid.appendChild(createSubjectCard(subjectName)));
+        return;
+      }
+
+      title.textContent = `${subject} Resources`;
+      desc.textContent = selectedType
+        ? `Showing ${typeLabels[selectedType]} for ${subject}. Click download to save the file.`
+        : `Choose a resource type to download for ${subject}.`;
+
+      renderSubjectSelector();
+      renderTypeFilters();
+
+      const subjectData = data[subject];
+      types.forEach(type => {
+        const resource = subjectData[type] || null;
+        const isSelected = selectedType === type;
+        grid.appendChild(createRow(type, resource, isSelected));
+      });
+    }
+
+    renderPage();
+  </script>
+</body>
+</html>

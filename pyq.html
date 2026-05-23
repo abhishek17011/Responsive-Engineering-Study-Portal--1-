@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PYQ Download | Engineer Vault</title>
+  <link rel="icon" type="image/webp" href="images/bamu%20logo.webp">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Engineer Vault</div>
+      <ul class="nav-links active" id="navbar-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#branches">Branches</a></li>
+        <li><a href="index.html#resources">Resources</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="download-page">
+    <div class="download-card">
+      <h1 id="page-title">Choose Your Exam</h1>
+      <p id="page-desc">Select your exam session first, then choose a subject to download its PYQ.</p>
+      <div id="exam-controls" class="download-controls"></div>
+      <div id="resource-table" class="download-grid"></div>
+      <section id="previewPanel" class="preview-panel hidden">
+        <div class="preview-header">
+          <h3 id="previewTitle">PYQ Preview</h3>
+          <button type="button" id="closePreviewBtn" class="close-btn" aria-label="Close preview">×</button>
+        </div>
+        <pre id="previewContent" class="preview-content">Preview content will appear here after clicking the eye icon.</pre>
+      </section>
+      <a class="back-link" href="index.html#branches">← Back to Study Portal</a>
+    </div>
+  </section>
+
+  <script>
+    const subjectNames = [
+      "Applied Mathematics-I",
+      "Basics of Electrical Engineering",
+      "Engineering Physics",
+      "Principal of Programming Language",
+      "Design Thinking",
+      "Professional Communication Skills",
+      "Engineering Graphics",
+      "Applied Mathematics-II",
+      "Indian Knowledge System",
+      "Engineering Chemistry",
+      "Basics of Electronics Engineering",
+      "Programming for Problem Solving",
+      // "Data Structures",
+      // "OOP using JAVA",
+      // "Discrete Mathematics",
+      // "Industrial Automation",
+      // "Indian Constitution",
+      // "Risk Management and Compliances",
+      // "Entrepreneurship Development",
+      // "Environmental Studies",
+      // "Operating System",
+      // "Computer Network",
+      // "Marathi",
+      // "Probability and Statistics",
+      // "Universal Human Values",
+      // "Industrial Management",
+      // "Business Intelligence",
+      // "Robotics Kinematics and Dynamics",
+      "AI MOCK Subject 3 - 1",
+      "AI MOCK Subject 3 - 2",
+      "AI MOCK Subject 3 - 3",
+      "AI MOCK Subject 3 - 4",
+      "AI MOCK Subject 3 - 5",
+      "AI MOCK Subject 3 - 6",
+      "AI MOCK Subject 3 - 7",
+      "AI MOCK Subject 3 - 8"
+      
+
+    
+      
+    ];
+
+    function slugify(value) {
+      return value
+        .toLowerCase()
+        .replace(/&/g, 'and')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+    }
+
+    function createExamSubjects(examFolder) {
+      const result = {};
+
+      subjectNames.forEach(subject => {
+        result[subject] = {
+          file: `pyq/${examFolder}/${slugify(subject)}-pyq.pdf`
+        };
+      });
+
+      return result;
+    }
+
+    // Filters requested:
+    // - Show Jan/Feb 2025 only for Semester 1 across all branches.
+    // - Do not show Semester 2 for the year (i.e., hide Jan/Feb 2025 when semester is 2).
+    const examData = {
+      "May/June 2025": createExamSubjects('may-june-2025'),
+      "Jan/Feb 2025": createExamSubjects('jan-feb-2025'),
+      "Jan/Feb 2026": createExamSubjects('jan-feb-2026'),
+      "May/June 2026": createExamSubjects('may-june-2026')
+
+    };
+
+    const params = new URLSearchParams(location.search);
+    let selectedExam = params.get('exam');
+    const selectedSubject = params.get('subject');
+    const selectedSemester = params.get('semester');
+    const selectedYear = params.get('year');
+    const selectedBranch = (params.get('branch') || 'cse').toLowerCase();
+    const title = document.getElementById('page-title');
+    const desc = document.getElementById('page-desc');
+    const examControls = document.getElementById('exam-controls');
+    const table = document.getElementById('resource-table');
+
+    const isSecondYear = selectedYear === '2' || selectedSemester === '3' || selectedSemester === '4';
+
+    // Semester rule requested:
+    // - Show Jan/Feb 2025 only for Semester 1.
+    // - Hide Jan/Feb 2025 for Semester 2+.
+    const isSemester1 = selectedSemester === '1';
+    const exams = isSecondYear
+      ? (selectedSemester === '4' ? ["May/June 2026"] : ["Jan/Feb 2026", "May/June 2026"])
+      : (() => {
+          const base = Object.keys(examData).filter(exam => {
+            if (exam === 'Jan/Feb 2025') return isSemester1;
+            return true;
+          });
+
+          // Requested ordering:
+          // Jan/Feb 2025 should appear above May/June 2025.
+          base.sort((a, b) => {
+            if (a === 'Jan/Feb 2025') return -1;
+            if (b === 'Jan/Feb 2025') return 1;
+            return 0;
+          });
+
+          return base;
+        })();
+
+    const semesterSubjects = {
+      1: [
+        "Applied Mathematics-I",
+        "Basics of Electrical Engineering",
+        "Engineering Physics",
+        "Principal of Programming Language",
+        "Design Thinking",
+        "Professional Communication Skills"
+      ],
+      2: [
+        "Engineering Graphics",
+        "Applied Mathematics-II",
+        "Indian Knowledge System",
+        "Engineering Chemistry",
+        "Basics of Electronics Engineering",
+        "Programming for Problem Solving"
+      ]
+    };
+
+    // ================================
+    // BRANCH-WISE OVERRIDE for 1st year (Year=1, Sem=1/2)
+    // ================================
+    // Same pattern as Year 2: each branch gets its own subject list.
+
+    const branchYear1SemesterSubjects = {
+      cse: {
+        1: [
+          "Applied Mathematics-I",
+          "Basics of Electrical Engineering",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Principal of Programming Language",
+          "Design Thinking",
+          "Professional Communication Skills"
+        ],
+        2: [
+          "Engineering Graphics",
+          "Applied Mathematics-II",
+          "Indian Knowledge System",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Basics of Electronics Engineering",
+          "Programming for Problem Solving"
+        ]
+      },
+      ai: {
+        1: [
+          "Applied Mathematics-I",
+          "Basics of Electrical Engineering",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Principal of Programming Language",
+          "Design Thinking",
+          "Professional Communication Skills"
+        ],
+        2: [
+          "Engineering Graphics",
+          "Applied Mathematics-II",
+          "Indian Knowledge System",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Basics of Electronics Engineering",
+          "Programming for Problem Solving"
+        ]
+      },
+      eee: {
+        1: [
+          "Applied Mathematics-I",
+          "Basics of Electrical Engineering",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Principal of Programming Language",
+          "Design Thinking",
+          "Professional Communication Skills"
+        ],
+        2: [
+          "Engineering Graphics",
+          "Applied Mathematics-II",
+          "Indian Knowledge System",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Basics of Electronics Engineering",
+          "Programming for Problem Solving"
+        ]
+      },
+      civ: {
+        1: [
+          "Applied Mathematics-I",
+          // "Basics of Electrical Engineering",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          // "Principal of Programming Language",
+          "Design Thinking",
+          "Professional Communication Skills",
+          "Engineering Mechanics",
+          "Engineering Graphics"
+        ],
+        2: [
+          "Engineering Graphics",
+          "Applied Mathematics-II",
+          "Indian Knowledge System",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Basics of Electronics Engineering",
+          "Programming for Problem Solving"
+        ]
+      },
+      mech: {
+        1: [
+          "Applied Mathematics-I",
+          // "Basics of Electrical Engineering",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          // "Principal of Programming Language",
+          "Design Thinking",
+          "Professional Communication Skills",
+          "Engineering Mechanics",
+          "Engineering Graphics"
+        ],
+        2: [
+          "Engineering Graphics",
+          "Applied Mathematics-II",
+          "Indian Knowledge System",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Basics of Electronics Engineering",
+          "Programming for Problem Solving"
+        ]
+      }
+    };
+
+    // ================================
+    // BRANCH-WISE OVERRIDE for 2nd year (Year=2, Sem=3/4)
+    // ================================
+    // - Year 1 (Sem 1 & Sem 2): subject list stays branch-independent.
+    // - Year 2 (Sem 3 & Sem 4): subject list becomes branch-specific.
+    //
+    // Implementation assumes the page is opened with URL params:
+    //   pyq.html?branch=cse&year=2&semester=3
+
+    const branchYear2SemesterSubjects = {
+      // ===== CSE =====
+      cse: {
+        3: [
+          "Data Structures",
+          "OOP using JAVA",
+          "Discrete Mathematics",
+          "Industrial Automation",
+          "Indian Constitution",
+          "Risk Management and Compliances",
+          "Entrepreneurship Development",
+          "Environmental Studies"
+        ],
+        4: [
+          "Operating System",
+          "Computer Network",
+          "Marathi",
+          "Probability and Statistics",
+          "Universal Human Values",
+          "Industrial Management",
+          "Business Intelligence",
+          "Robotics Kinematics and Dynamics"
+        ]
+      },
+
+      // ===== AI =====
+      ai: {
+        3: [
+          "AI MOCK Subject 3 - 1",
+          "AI MOCK Subject 3 - 2",
+          "AI MOCK Subject 3 - 3",
+          "AI MOCK Subject 3 - 4",
+          "AI MOCK Subject 3 - 5",
+          "AI MOCK Subject 3 - 6",
+          "AI MOCK Subject 3 - 7",
+          "AI MOCK Subject 3 - 8"
+        ],
+        4: [
+          "AI MOCK Subject 4 - 1",
+          "AI MOCK Subject 4 - 2",
+          "AI MOCK Subject 4 - 3",
+          "AI MOCK Subject 4 - 4",
+          "AI MOCK Subject 4 - 5",
+          "AI MOCK Subject 4 - 6",
+          "AI MOCK Subject 4 - 7",
+          "AI MOCK Subject 4 - 8"
+        ]
+      },
+
+      // ===== EEE =====
+      eee: {
+        3: [
+          "EEE MOCK Subject 3 - 1",
+          "EEE MOCK Subject 3 - 2",
+          "EEE MOCK Subject 3 - 3",
+          "EEE MOCK Subject 3 - 4",
+          "EEE MOCK Subject 3 - 5",
+          "EEE MOCK Subject 3 - 6",
+          "EEE MOCK Subject 3 - 7",
+          "EEE MOCK Subject 3 - 8"
+        ],
+        4: [
+          "EEE MOCK Subject 4 - 1",
+          "EEE MOCK Subject 4 - 2",
+          "EEE MOCK Subject 4 - 3",
+          "EEE MOCK Subject 4 - 4",
+          "EEE MOCK Subject 4 - 5",
+          "EEE MOCK Subject 4 - 6",
+          "EEE MOCK Subject 4 - 7",
+          "EEE MOCK Subject 4 - 8"
+        ]
+      },
+
+      // ===== CIV =====
+      civ: {
+        3: [
+          "CIV MOCK Subject 3 - 1",
+          "CIV MOCK Subject 3 - 2",
+          "CIV MOCK Subject 3 - 3",
+          "CIV MOCK Subject 3 - 4",
+          "CIV MOCK Subject 3 - 5",
+          "CIV MOCK Subject 3 - 6",
+          "CIV MOCK Subject 3 - 7",
+          "CIV MOCK Subject 3 - 8"
+        ],
+        4: [
+          "CIV MOCK Subject 4 - 1",
+          "CIV MOCK Subject 4 - 2",
+          "CIV MOCK Subject 4 - 3",
+          "CIV MOCK Subject 4 - 4",
+          "CIV MOCK Subject 4 - 5",
+          "CIV MOCK Subject 4 - 6",
+          "CIV MOCK Subject 4 - 7",
+          "CIV MOCK Subject 4 - 8"
+        ]
+      },
+
+      // ===== MECH =====
+      mech: {
+        3: [
+          "MECH MOCK Subject 3 - 1",
+          "MECH MOCK Subject 3 - 2",
+          "MECH MOCK Subject 3 - 3",
+          "MECH MOCK Subject 3 - 4",
+          "MECH MOCK Subject 3 - 5",
+          "MECH MOCK Subject 3 - 6",
+          "MECH MOCK Subject 3 - 7",
+          "MECH MOCK Subject 3 - 8"
+        ],
+        4: [
+          "MECH MOCK Subject 4 - 1",
+          "MECH MOCK Subject 4 - 2",
+          "MECH MOCK Subject 4 - 3",
+          "MECH MOCK Subject 4 - 4",
+          "MECH MOCK Subject 4 - 5",
+          "MECH MOCK Subject 4 - 6",
+          "MECH MOCK Subject 4 - 7",
+          "MECH MOCK Subject 4 - 8"
+        ]
+      }
+    };
+
+    const branchKey = selectedBranch;
+
+    function getSubjectsForSemester(semester) {
+      const semNum = Number(semester);
+
+      // Year 1: branch-specific subjects for Sem 1 & Sem 2
+      if (semNum === 1 || semNum === 2) {
+        const branchEntry = branchYear1SemesterSubjects[branchKey] || branchYear1SemesterSubjects['cse'];
+        return branchEntry[semNum] || semesterSubjects[semNum];
+      }
+
+      // Year 2: branch-specific subjects for Sem 3 & Sem 4
+      if (semNum === 3 || semNum === 4) {
+        const branchEntry = branchYear2SemesterSubjects[branchKey] || branchYear2SemesterSubjects['cse'];
+        return branchEntry[semNum] || semesterSubjects[semNum];
+      }
+
+      return semesterSubjects[semNum] || semesterSubjects[semester];
+    }
+
+
+
+
+    function updateUrl() {
+      const newParams = new URLSearchParams();
+      if (selectedBranch) newParams.set('branch', selectedBranch);
+      if (selectedSubject) newParams.set('subject', selectedSubject);
+      if (selectedSemester) newParams.set('semester', selectedSemester);
+      if (selectedYear) newParams.set('year', selectedYear);
+      if (selectedExam) newParams.set('exam', selectedExam);
+      window.history.replaceState(null, '', `${location.pathname}?${newParams.toString()}`);
+    }
+
+    function getSubjectResource(subject) {
+      return {
+        file: `pyq/${slugify(selectedExam)}/${slugify(subject)}-pyq.pdf`
+      };
+    }
+
+    const availablePyqFiles = new Set([
+      'pyq/jan-feb-2025/applied-mathematics-i-pyq.pdf',
+      'pyq/jan-feb-2025/basics-of-electrical-engineering-pyq.pdf',
+      'pyq/jan-feb-2025/principal-of-programming-language-pyq.pdf',
+      'pyq/jan-feb-2025/design-thinking-pyq.pdf',
+      'pyq/jan-feb-2025/engineering-chemistry-pyq.pdf',
+      'pyq/jan-feb-2025/engineering-physics-pyq.pdf',
+      'pyq/jan-feb-2025/professional-communication-skills-pyq.pdf',
+      'pyq/jan-feb-2025/programming-for-problem-solving-pyq.pdf',
+      'pyq/jan-feb-2025/engineering-mechanics-pyq.pdf',
+      'pyq/jan-feb-2025/engineering-graphics-pyq.pdf',
+      'pyq/may-june-2025/applied-mathematics-i-pyq.pdf',
+      'pyq/may-june-2025/basics-of-electrical-engineering-pyq.pdf',
+      'pyq/may-june-2025/engineering-chemistry-pyq.pdf',
+      'pyq/may-june-2025/engineering-physics-pyq.pdf',
+      'pyq/may-june-2025/principal-of-programming-language-pyq.pdf',
+      'pyq/may-june-2025/engineering-mechanics-pyq.pdf',
+      'pyq/may-june-2025/engineering-graphics-pyq.pdf',      
+    ]);
+
+    function isPyqAvailable(filePath) {
+      return availablePyqFiles.has(filePath.toLowerCase());
+    }
+
+    function getCleanPreviewUrl(filePath) {
+      return `${filePath}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`;
+    }
+
+    function createExamButton(exam) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'type-button' + (selectedExam === exam ? ' active' : '');
+      button.textContent = exam;
+      button.addEventListener('click', () => {
+        selectedExam = exam;
+        updateUrl();
+        renderPage();
+      });
+      return button;
+    }
+
+    // Keep branch/year/semester params when changing selected exam/subject.
+    // This is required so AI override (branch=ai) continues to work after clicks.
+    // updateUrl() already preserves year/semester from current variables.
+    // No additional change needed here, but leaving this comment for clarity.
+
+    function createSubjectRow(subject, resource) {
+      const filePath = resource && resource.file ? resource.file : '';
+      const isAvailable = filePath && isPyqAvailable(filePath);
+      const row = document.createElement('div');
+      row.className = 'download-row';
+
+      const info = document.createElement('div');
+      info.className = 'download-row-info';
+      const heading = document.createElement('h3');
+      heading.textContent = subject;
+      const paragraph = document.createElement('p');
+      paragraph.textContent = isAvailable
+        ? `Download the ${selectedExam} PYQ for ${subject}.`
+        : `${selectedExam} PYQ for ${subject} is not available now.`;
+      if (!isAvailable) {
+        paragraph.className = 'download-row-error';
+      }
+      info.appendChild(heading);
+      info.appendChild(paragraph);
+
+      const action = document.createElement('div');
+      action.className = 'download-row-action';
+
+      const previewButton = document.createElement('button');
+      previewButton.type = 'button';
+      previewButton.className = 'preview-btn';
+      previewButton.title = `Preview the ${subject} PYQ`;
+      previewButton.innerHTML = '👁️';
+      previewButton.addEventListener('click', () => {
+        if (isAvailable) {
+          showPreview(subject, filePath);
+        } else {
+          showUnavailablePreview(subject);
+        }
+      });
+
+      action.appendChild(previewButton);
+
+      const link = document.createElement('a');
+      link.href = isAvailable ? filePath : '#';
+      link.textContent = isAvailable ? `Download PYQ` : `Not Available`;
+      link.className = 'download-btn';
+      if (isAvailable) {
+        link.setAttribute('download', filePath);
+      } else {
+        link.setAttribute('aria-disabled', 'true');
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          showUnavailablePreview(subject);
+        });
+      }
+      action.appendChild(link);
+
+
+      row.appendChild(info);
+
+      row.appendChild(action);
+      return row;
+    }
+
+    function showUnavailablePreview(subject) {
+      const previewPanel = document.getElementById('previewPanel');
+      const previewTitle = document.getElementById('previewTitle');
+      const previewContent = document.getElementById('previewContent');
+
+      previewTitle.textContent = `${selectedExam} â€” ${subject} Preview`;
+      previewContent.innerHTML = `<span class="download-row-error">${subject} PYQ is not available now.</span>`;
+      previewPanel.classList.remove('hidden');
+      previewPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function showPreview(subject, filePath) {
+      const previewPanel = document.getElementById('previewPanel');
+      const previewTitle = document.getElementById('previewTitle');
+      const previewContent = document.getElementById('previewContent');
+
+      previewTitle.textContent = `${selectedExam} — ${subject} Preview`;
+      previewContent.innerHTML = '';
+      previewPanel.classList.remove('hidden');
+      previewPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      const iframe = document.createElement('iframe');
+      iframe.src = getCleanPreviewUrl(filePath);
+      iframe.title = `${subject} PYQ Preview`;
+      iframe.style.width = '100%';
+      iframe.style.height = '420px';
+      iframe.style.border = 'none';
+      iframe.loading = 'lazy';
+
+      iframe.onerror = () => {
+        previewContent.innerHTML = `<span style="color: #16a34a; font-weight: 600;">${subject} PYQ is not available now.</span>`;
+      };
+
+      previewContent.appendChild(iframe);
+
+    }
+
+    function hidePreview() {
+      const previewPanel = document.getElementById('previewPanel');
+      previewPanel.classList.add('hidden');
+    }
+
+    function renderPage() {
+      examControls.innerHTML = '';
+      table.innerHTML = '';
+
+      if (selectedExam && !exams.includes(selectedExam)) {
+        selectedExam = null;
+        updateUrl();
+        return;
+      }
+
+      exams.forEach(exam => examControls.appendChild(createExamButton(exam)));
+
+      const previewPanel = document.getElementById('previewPanel');
+      if (previewPanel) {
+        previewPanel.classList.add('hidden');
+      }
+
+      if (!selectedExam) {
+        title.textContent = 'Choose Your Exam';
+        desc.textContent = 'Pick an exam session first. Then the available PYQs will appear below.';
+        return;
+      }
+
+      title.textContent = `${selectedExam} PYQ Downloads`;
+      desc.textContent = selectedSubject
+        ? `Showing PYQ status for ${selectedSubject}.`
+        : selectedSemester && getSubjectsForSemester(selectedSemester)
+          ? `Showing Semester ${selectedSemester} PYQ subjects.`
+          : `Select the subject below and download the ${selectedExam} PYQ file.`;
+
+      const subjectData = examData[selectedExam] || {};
+      const visibleSubjects = selectedSubject
+        ? [selectedSubject]
+        : selectedSemester
+          ? getSubjectsForSemester(Number(selectedSemester))
+          : Object.keys(subjectData);
+
+
+      visibleSubjects.forEach(subject => {
+        table.appendChild(createSubjectRow(subject, subjectData[subject] || getSubjectResource(subject)));
+      });
+    }
+
+    renderPage();
+  </script>
+
+  <script>
+    document.getElementById('closePreviewBtn').addEventListener('click', hidePreview);
+  </script>
+
+  <!-- ========================= -->
+  <!-- FOOTER -->
+  <!-- ========================= -->
+
+  <footer id="footer">
+
+    <h2>
+      Engineer Vault
+    </h2>
+
+    <p>
+      Your Engineering Study Partner
+    </p>
+
+    <p class="contact">
+      Contact: <a href="mailto:mindfactsh@gmail.com">mindfactsh@gmail.com</a>
+    </p>
+
+    <p class="copyright">
+      2026 Rajnandini Thalkari All rights reserved
+    </p>
+
+  </footer>
+
+</body>
+</html>

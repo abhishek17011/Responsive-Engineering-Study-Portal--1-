@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes Download | Engineer Vault</title>
+  <link rel="icon" type="image/webp" href="images/bamu%20logo.webp">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Engineer Vault</div>
+      <ul class="nav-links active" id="navbar-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#branches">Branches</a></li>
+        <li><a href="index.html#resources">Resources</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="download-page">
+    <div class="download-card">
+      <h1>Notes Download</h1>
+      <p id="page-desc">Select the subject below to download the available notes file.</p>
+      <div id="resource-table" class="resource-table"></div>
+      <a class="back-link" href="index.html#branches">← Back to Study Portal</a>
+    </div>
+  </section>
+
+  <script>
+    const resourceType = 'notes';
+    const resourceLabel = 'Notes';
+    const data = {
+      "Applied Mathematics-I": { file: null },
+      "Basics of Electrical Engineering": { file: null },
+      "Engineering Physics": { file: null },
+      "Principal of Programming Language": { file: null },
+      "Design Thinking": { file: null },
+      "Professional Communication Skills": { file: null },
+      "Engineering Graphics": { file: null },
+      "Applied Mathematics-II": { file: null },
+      "Indian Knowledge System": { file: null },
+      "Engineering Chemistry": { file: null },
+      "Basics of Electronics Engineering": { file: null },
+      "Programming for Problem Solving": { file: null },
+      "Data Structures": { file: "notes/data-structures-notes.txt" },
+      DBMS: { file: "notes/dbms-notes.txt" },
+      "Object Oriented Programming": { file: null },
+      "Operating System": { file: null },
+      "Artificial Intelligence": { file: null },
+      "Python Programming": { file: null },
+      "Machine Learning Basics": { file: null },
+      "Data Analytics": { file: null },
+      "Network Analysis": { file: null },
+      "Digital Electronics": { file: null },
+      "Electrical Machines": { file: null },
+      "Signals and Systems": { file: null },
+      Surveying: { file: null },
+      "Building Materials": { file: null },
+      "Fluid Mechanics": { file: null },
+      "Structural Analysis": { file: null },
+      Thermodynamics: { file: "notes/thermodynamics-notes.txt" },
+      "Strength of Materials": { file: null },
+      "Manufacturing Processes": { file: null },
+      "Machine Drawing": { file: null }
+    };
+
+    const params = new URLSearchParams(location.search);
+    const selectedSubject = params.get('subject');
+    const selectedSemester = params.get('semester');
+    const table = document.getElementById('resource-table');
+    const desc = document.getElementById('page-desc');
+    const semesterSubjects = {
+      1: [
+        "Applied Mathematics-I",
+        "Basics of Electrical Engineering",
+        "Engineering Physics",
+        "Principal of Programming Language",
+        "Design Thinking",
+        "Professional Communication Skills"
+      ],
+      2: [
+        "Engineering Graphics",
+        "Applied Mathematics-II",
+        "Indian Knowledge System",
+        "Engineering Chemistry",
+        "Basics of Electronics Engineering",
+        "Programming for Problem Solving"
+      ],
+      3: [
+        "Data Structures",
+        "DBMS",
+        "Object Oriented Programming",
+        "Operating System"
+      ],
+      4: [
+        "Artificial Intelligence",
+        "Python Programming",
+        "Machine Learning Basics",
+        "Data Analytics"
+      ]
+    };
+
+    if (selectedSubject && data[selectedSubject]) {
+      desc.textContent = data[selectedSubject].file
+        ? `You selected ${selectedSubject}. Use the button below to download the ${resourceLabel}.`
+        : `You selected ${selectedSubject}. ${resourceLabel} file is coming soon.`;
+    } else if (selectedSemester && semesterSubjects[selectedSemester]) {
+      desc.textContent = `Showing Semester ${selectedSemester} ${resourceLabel} subjects.`;
+    }
+
+    const visibleSubjects = selectedSubject && data[selectedSubject]
+      ? [selectedSubject]
+      : selectedSemester && semesterSubjects[selectedSemester]
+        ? semesterSubjects[selectedSemester]
+        : Object.keys(data);
+
+    visibleSubjects.forEach(subject => {
+      const row = document.createElement('div');
+      row.className = 'resource-row' + (subject === selectedSubject ? ' selected' : '');
+
+      const name = document.createElement('div');
+      name.className = 'resource-name';
+      name.textContent = subject;
+
+      const action = document.createElement('div');
+      action.className = 'resource-action';
+      if (!data[subject].file) {
+        const label = document.createElement('span');
+        label.className = 'download-missing';
+        label.textContent = 'Coming soon';
+        action.appendChild(label);
+      } else {
+        const button = document.createElement('a');
+        button.href = data[subject].file;
+        button.textContent = `Download ${resourceLabel}`;
+        button.className = 'download-btn';
+        button.setAttribute('download', data[subject].file);
+        action.appendChild(button);
+      }
+
+      row.appendChild(name);
+      row.appendChild(action);
+      table.appendChild(row);
+    });
+  </script>
+
+  <!-- ========================= -->
+  <!-- FOOTER -->
+  <!-- ========================= -->
+
+  <footer id="footer">
+
+    <h2>
+      Engineer Vault
+    </h2>
+
+    <p>
+      Your Engineering Study Partner
+    </p>
+
+    <p class="contact">
+      Contact: <a href="mailto:mindfactsh@gmail.com">mindfactsh@gmail.com</a>
+    </p>
+
+    <p class="copyright">
+      2026 Rajnandini Thalkari All rights reserved
+    </p>
+
+  </footer>
+
+</body>
+</html>

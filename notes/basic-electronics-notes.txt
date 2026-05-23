@@ -1,0 +1,7 @@
+Engineer Vault - Basic Electronics Notes
+
+Subject: Basic Electronics
+Resource: Notes
+Year: 1st Year
+
+This is a sample notes file for Basic Electronics. Replace this file with your full lecture notes.

@@ -1,0 +1,7 @@
+Engineer Vault - DBMS Notes
+
+Subject: DBMS
+Resource: Notes
+Year: 2nd Year
+
+This is a sample notes file for DBMS. Replace this file with your actual database management systems notes.

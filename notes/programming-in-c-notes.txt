@@ -1,0 +1,7 @@
+Engineer Vault - Programming in C Notes
+
+Subject: Programming in C
+Resource: Notes
+Year: 1st Year
+
+This is a sample notes file for Programming in C. Replace this file with your actual subject notes.

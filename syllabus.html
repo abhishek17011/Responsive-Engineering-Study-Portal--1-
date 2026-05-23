@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Syllabus Download | Engineer Vault</title>
+  <link rel="icon" type="image/webp" href="images/bamu%20logo.webp">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="logo">Engineer Vault</div>
+      <ul class="nav-links active" id="navbar-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#branches">Branches</a></li>
+        <li><a href="index.html#resources">Resources</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="download-page">
+    <div class="download-card">
+      <h1 id="page-title">Syllabus Download</h1>
+      <p id="page-desc">Download or preview the selected syllabus.</p>
+
+      <div id="resource-table" class="download-grid"></div>
+
+      <section id="previewPanel" class="preview-panel hidden">
+        <div class="preview-header">
+          <h3 id="previewTitle">Syllabus Preview</h3>
+          <button type="button" id="closePreviewBtn" class="close-btn" aria-label="Close preview">x</button>
+        </div>
+        <pre id="previewContent" class="preview-content">Preview content will appear here after clicking the eye icon.</pre>
+      </section>
+      <a class="back-link" href="index.html#branches">&lt;- Back to Study Portal</a>
+    </div>
+  </section>
+
+  <script>
+    const branches = {
+      cse: 'Computer Science',
+      ai: 'Artificial Intelligence',
+      eee: 'Electrical and Electronics',
+      civ: 'Civil Engineering',
+      mech: 'Mechanical Engineering'
+    };
+
+    const params = new URLSearchParams(location.search);
+
+    // Supported params (used across this project):
+    // - branch (cse|ai|eee|civ|mech)
+    // - year (1|2)
+    // - semester (1..4)  -> infer year
+    // - subject (string) -> keep for future mapping (currently only used to improve UX)
+
+    const branchFromParam = params.get('branch');
+    const yearFromParam = params.get('year');
+    const semesterFromParam = params.get('semester');
+
+    // Infer year from semester if year isn't directly provided.
+    // Year 1 => Semester 1-2, Year 2 => Semester 3-4
+    let resolvedYear = yearFromParam || '1';
+
+    if (!yearFromParam && semesterFromParam) {
+      const semNum = Number(semesterFromParam);
+      if (semNum >= 3 && semNum <= 4) resolvedYear = '2';
+      else if (semNum >= 1 && semNum <= 2) resolvedYear = '1';
+    }
+
+    // Branch: if not present, fall back to cse.
+    // Note: current index.html uses subject/semester params for syllabus links,
+    // so we rely on explicit branch/year params when available.
+    const resolvedBranch = branchFromParam || 'cse';
+
+    const branchName = branches[resolvedBranch] || 'Computer Science';
+    const yearLabel = resolvedYear === '1' ? '1st' : resolvedYear === '2' ? '2nd' : `${resolvedYear}th`;
+
+    const subjectFromParam = params.get('subject');
+    const syllabusTitle = subjectFromParam
+      ? `${subjectFromParam} — ${branchName} ${yearLabel} Year Syllabus`
+      : `${branchName} ${yearLabel} Year Syllabus`;
+
+    const filePath = `syllabus/${resolvedBranch}-${resolvedYear}-year-syllabus.pdf`;
+
+    const title = document.getElementById('page-title');
+
+    function getCleanPreviewUrl(filePath) {
+      return `${filePath}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`;
+    }
+
+    // In a pure static site we can't reliably list server directory contents.
+    // Instead, we check the existence of the exact PDF via a lightweight HEAD request.
+    // If HEAD isn't supported, we fall back to a GET check.
+    // This makes the "Available / Not available" button correct for all branches.
+    async function checkPdfExists(url) {
+      try {
+        // HEAD is cheaper than GET.
+        const res = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+        if (res && res.ok) return true;
+        // Some hosts may not support HEAD correctly, so we verify with GET.
+        const res2 = await fetch(url, { method: 'GET', cache: 'no-store' });
+        return !!(res2 && res2.ok);
+      } catch (e) {
+        return false;
+      }
+    }
+
+    const desc = document.getElementById('page-desc');
+    const table = document.getElementById('resource-table');
+    const previewPanel = document.getElementById('previewPanel');
+    const previewTitle = document.getElementById('previewTitle');
+    const previewContent = document.getElementById('previewContent');
+    const closePreviewBtn = document.getElementById('closePreviewBtn');
+
+    title.textContent = syllabusTitle;
+    desc.textContent = `Use the buttons below to preview or download ${syllabusTitle}.`;
+
+    const row = document.createElement('div');
+    row.className = 'download-row selected';
+
+    const info = document.createElement('div');
+    info.className = 'download-row-info';
+    const heading = document.createElement('h3');
+    heading.textContent = syllabusTitle;
+    const paragraph = document.createElement('p');
+    paragraph.textContent = 'Complete syllabus file for the selected branch and year.';
+    info.appendChild(heading);
+    info.appendChild(paragraph);
+
+    const action = document.createElement('div');
+    action.className = 'download-row-action';
+
+    const previewButton = document.createElement('button');
+    previewButton.type = 'button';
+    previewButton.className = 'preview-btn';
+    previewButton.title = `Preview ${syllabusTitle}`;
+    previewButton.innerHTML = '&#128065;';
+    previewButton.addEventListener('click', () => {
+      showPreview();
+    });
+
+    const downloadButton = document.createElement('a');
+    downloadButton.href = filePath;
+    // Default label; we will update it after we confirm the PDF exists.
+    downloadButton.textContent = 'Checking...';
+    downloadButton.className = 'download-btn';
+    downloadButton.setAttribute('download', filePath);
+
+    // Preview should only be shown when file exists.
+    // We'll disable preview button until the check completes.
+    previewButton.disabled = true;
+    previewButton.style.opacity = '0.6';
+
+    // Resolve availability by checking actual PDF existence in the /syllabus folder.
+    checkPdfExists(filePath).then((exists) => {
+      if (exists) {
+        downloadButton.textContent = 'Download Syllabus';
+        previewButton.disabled = false;
+        previewButton.style.opacity = '1';
+      } else {
+        downloadButton.textContent = 'Download (not available)';
+        downloadButton.setAttribute('aria-disabled', 'true');
+        downloadButton.addEventListener('click', (e) => {
+          e.preventDefault();
+        }, { once: true });
+
+        previewButton.textContent = '—';
+        previewButton.disabled = true;
+        previewButton.style.opacity = '0.6';
+      }
+    });
+
+    action.appendChild(previewButton);
+    action.appendChild(downloadButton);
+    row.appendChild(info);
+    row.appendChild(action);
+    table.appendChild(row);
+
+    function showPreview() {
+      previewTitle.textContent = `${syllabusTitle} Preview`;
+
+      // Embed PDF in preview panel (better UX than fetching as text).
+      previewContent.innerHTML = '';
+      previewPanel.classList.remove('hidden');
+      previewPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      const iframe = document.createElement('iframe');
+      iframe.src = getCleanPreviewUrl(filePath);
+      iframe.title = syllabusTitle;
+      iframe.style.width = '100%';
+      iframe.style.height = '420px';
+      iframe.style.border = 'none';
+      iframe.loading = 'lazy';
+
+      // If the PDF can't be loaded (missing file / blocked), show fallback.
+      iframe.addEventListener('load', () => {
+        // Keep as-is: some browsers don't fire error reliably for PDFs.
+      });
+
+      iframe.onerror = () => {
+        previewPanel.classList.remove('hidden');
+        previewContent.innerHTML = `<p style="color:#16a34a;font-weight:600;">${syllabusTitle} is not available soon.</p>`;
+      };
+
+      // If browser blocks loading / can't render PDF, iframe can appear blank.
+      // The onerror handler above will cover most cases.
+      previewContent.appendChild(iframe);
+
+      // Also show a fallback message immediately if file path is missing.
+      // (This avoids a blank preview UI for missing PDFs.)
+      if (!filePath) {
+        previewContent.innerHTML = `<p style="color:#16a34a;font-weight:600;">${syllabusTitle} is not available soon.</p>`;
+      }
+    }
+
+
+
+    // If user somehow clicks preview while disabled, block gracefully.
+    if (previewButton.disabled) {
+      previewButton.addEventListener('click', (e) => e.preventDefault());
+    }
+
+    closePreviewBtn.addEventListener('click', () => {
+      previewPanel.classList.add('hidden');
+      // Clear iframe to avoid keeping it in memory.
+      previewContent.innerHTML = '';
+    });
+
+
+  </script>
+
+
+  <footer id="footer">
+    <h2>Engineer Vault</h2>
+    <p>Your Engineering Study Partner</p>
+    <p class="contact">
+      Contact: <a href="mailto:mindfactsh@gmail.com">mindfactsh@gmail.com</a>
+    </p>
+    <p class="copyright">
+      2026 Rajnandini Thalkari All rights reserved
+    </p>
+  </footer>
+</body>
+</html>

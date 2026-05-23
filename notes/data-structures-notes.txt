@@ -1,0 +1,7 @@
+Engineer Vault - Data Structures Notes
+
+Subject: Data Structures
+Resource: Notes
+Year: 2nd Year
+
+This is a sample notes file for Data Structures. Replace this file with your actual course notes in PDF or DOCX format.

@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>BAMU PYQ NEP | Engineer Vault</title>
+
+  <!-- CSS -->
+  <link rel="icon" type="image/webp" href="images/bamu%20logo.webp">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+</head>
+
+<body>
+
+  <marquee behavior="scroll" direction="left" class="top-notice">
+    This website is created for students and is intended only for study purposes. It aims to support learners with easy access to helpful academic resources.
+  </marquee>
+
+  <!-- ========================= -->
+  <!-- NAVBAR -->
+  <!-- ========================= -->
+
+  <header>
+
+
+    <nav class="navbar">
+
+      <div class="logo">
+        PYQ Notes Syllabus (NEP 2020 Curriculum)
+      </div>
+
+      <ul class="nav-links" id="navbar-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#branches">Branches</a></li>
+        <li><a href="#resources">Resources</a></li>
+        <li><a href="#footer">Contact</a></li>
+      </ul>
+
+      <button type="button" class="menu-btn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navbar-links">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      
+
+    </nav>
+  </header>
+
+
+  <!-- ========================= -->
+<!-- HERO SECTION -->
+<!-- ========================= -->
+
+<section class="hero" id="home">
+
+  <div class="hero-content">
+
+    <!-- Marquee -->
+
+    <marquee behavior="scroll" direction="left" class="marquee">
+
+      Welcome to Engineer Vault 🚀 |
+      Get Branch-wise & Year-wise Notes, PYQs and Syllabus Easily |
+      Your Engineering Study Partner 📚
+
+    </marquee>
+
+
+    <h1>
+      Welcome To Engineer Vault
+    </h1>
+
+    <p class="hero-para">
+      <strong>Engineer Vault</strong> is your one-stop station for Notes, PYQs,
+      and Syllabus based on the new NEP curriculum.
+
+      This platform is focused on helping engineering students find study resources
+      quickly in one organized place.
+
+      The website is still under process, and more subjects, files, and updates
+      will be added step by step.
+    </p>
+
+    <p class="hero-para hidden">
+
+      Welcome to <strong>Engineer Vault</strong> — a platform specially designed
+      for Engineering Students to access Notes, PYQs and Syllabus easily in one place.
+
+      We understand how difficult it becomes to search different websites and resources
+      before exams. That’s why this platform helps students with organized
+      Branch-wise and Year-wise study materials.
+
+      Whether you are preparing for Semester Exams, Sessionals, Viva or Placements,
+      Engineer Vault is here to support your learning journey 🚀
+
+      Learn smarter, stay consistent and keep growing as a future engineer 💙
+
+    </p>
+
+    <div class="hero-logo-block">
+      <p>Last updated on May 22, 2026</p>
+      <img src="images/bamu%20logo.webp" alt="BAMU logo">
+    </div>
+
+  </div>
+
+</section>
+
+
+  <!-- ========================= -->
+  <!-- BRANCHES -->
+  <!-- ========================= -->
+
+  <section class="branches" id="branches">
+
+    <h2 class="section-title">
+      Choose Your Branch
+    </h2>
+
+    <div class="branch-container">
+
+      <!-- ================= -->
+      <!-- COMPUTER SCIENCE -->
+      <!-- ================= -->
+
+      <div class="branch-card">
+
+        <h3>Computer Science</h3>
+
+        <p>
+          Notes, PYQs & Syllabus
+        </p>
+
+        <div class="year-buttons">
+
+          <button onclick="showYear('cse1')">
+            1st Year
+          </button>
+
+          <button onclick="showYear('cse2')">
+            2nd Year
+          </button>
+
+          <button onclick="showYear('cse3')">
+            3rd Year
+          </button>
+
+          <button onclick="showYear('cse4')">
+            4th Year
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= -->
+      <!-- ARTIFICIAL INTELLIGENCE -->
+      <!-- ================= -->
+
+      <div class="branch-card">
+
+        <h3>Artificial Intelligence</h3>
+
+        <p>
+          Notes, PYQs & Syllabus
+        </p>
+
+        <div class="year-buttons">
+
+          <button onclick="showYear('ai1')">
+            1st Year
+          </button>
+
+          <button onclick="showYear('ai2')">
+            2nd Year
+          </button>
+
+          <button onclick="showYear('ai3')">
+            3rd Year
+          </button>
+
+          <button onclick="showYear('ai4')">
+            4th Year
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= -->
+      <!-- ELECTRICAL AND ELECTRONICS -->
+      <!-- ================= -->
+
+      <div class="branch-card">
+
+        <h3>Electrical and Electronics</h3>
+
+        <p>
+          Notes, PYQs & Syllabus
+        </p>
+
+        <div class="year-buttons">
+
+          <button onclick="showYear('eee1')">
+            1st Year
+          </button>
+
+          <button onclick="showYear('eee2')">
+            2nd Year
+          </button>
+
+          <button onclick="showYear('eee3')">
+            3rd Year
+          </button>
+
+          <button onclick="showYear('eee4')">
+            4th Year
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= -->
+      <!-- CIVIL ENGINEERING -->
+      <!-- ================= -->
+
+      <div class="branch-card">
+
+        <h3>Civil Engineering</h3>
+
+        <p>
+          Notes, PYQs & Syllabus
+        </p>
+
+        <div class="year-buttons">
+
+          <button onclick="showYear('civ1')">
+            1st Year
+          </button>
+
+          <button onclick="showYear('civ2')">
+            2nd Year
+          </button>
+
+          <button onclick="showYear('civ3')">
+            3rd Year
+          </button>
+
+          <button onclick="showYear('civ4')">
+            4th Year
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- ================= -->
+      <!-- MECHANICAL -->
+      <!-- ================= -->
+
+      <div class="branch-card">
+
+        <h3>Mechanical Engineering</h3>
+
+        <p>
+          Notes, PYQs & Syllabus
+        </p>
+
+        <div class="year-buttons">
+
+          <button onclick="showYear('mech1')">
+            1st Year
+          </button>
+
+          <button onclick="showYear('mech2')">
+            2nd Year
+          </button>
+
+          <button onclick="showYear('mech3')">
+            3rd Year
+          </button>
+
+          <button onclick="showYear('mech4')">
+            4th Year
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- ========================= -->
+  <!-- RESOURCES -->
+  <!-- ========================= -->
+
+  <section class="resources" id="resources">
+
+    <p class="select-prompt">Select your branch and year above to view subject resources.</p>
+    <div class="coming-soon-message hidden" id="comingSoonMessage">
+      <h3>Coming Soon</h3>
+      <p>Resources are being prepared. Stay Tuned!</p>
+    </div>
+    <p class="no-results hidden">No matching subjects found. Try a different keyword.</p>
+
+    <!-- ================= -->
+    <!-- 1st and 2nd Year Resources -->
+    <!-- ================= -->
+
+    <div class="resource-box year-content hidden" id="cse1">
+      <h2>Computer Science - 1st Year</h2>
+      <h3 class="semester-title">Semester 1</h3>
+      <div class="subject-grid semester-actions">
+        <div class="subject-card">
+          <div class="buttons">
+            <a href="pyq.html?semester=1">PYQ</a>
+            <a href="notes.html?semester=1">Notes</a>
+            <a href="syllabus.html?semester=1">Syllabus</a>
+          </div>
+        </div>
+      </div>
+      <h3 class="semester-title">Semester 2</h3>
+      <div class="subject-grid semester-actions">
+        <div class="subject-card">
+          <div class="buttons">
+            <a href="pyq.html?semester=2">PYQ</a>
+            <a href="notes.html?semester=2">Notes</a>
+            <a href="syllabus.html?semester=2">Syllabus</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-box year-content hidden" id="cse2">
+      <h2>Computer Science - 2nd Year</h2>
+      <div class="subject-grid">
+        <div class="subject-card searchable">
+          <h3>Data Structures</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Data%20Structures">PYQ</a>
+            <a href="notes.html?subject=Data%20Structures">Notes</a>
+            <a href="syllabus.html?subject=Data%20Structures">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>DBMS</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=DBMS">PYQ</a>
+            <a href="notes.html?subject=DBMS">Notes</a>
+            <a href="syllabus.html?subject=DBMS">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Object Oriented Programming</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Object%20Oriented%20Programming">PYQ</a>
+            <a href="notes.html?subject=Object%20Oriented%20Programming">Notes</a>
+            <a href="syllabus.html?subject=Object%20Oriented%20Programming">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Operating System</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Operating%20System">PYQ</a>
+            <a href="notes.html?subject=Operating%20System">Notes</a>
+            <a href="syllabus.html?subject=Operating%20System">Syllabus</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-box year-content hidden" id="ai1">
+      <h2>Artificial Intelligence - 1st Year</h2>
+      <h3 class="semester-title">Semester 1</h3>
+      <div class="subject-grid">
+        <div class="subject-card searchable">
+          <h3>Applied Mathematics-I</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Applied%20Mathematics-I">PYQ</a>
+            <a href="notes.html?subject=Applied%20Mathematics-I">Notes</a>
+            <a href="syllabus.html?subject=Applied%20Mathematics-I">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Basics of Electrical Engineering</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Basics%20of%20Electrical%20Engineering">PYQ</a>
+            <a href="notes.html?subject=Basics%20of%20Electrical%20Engineering">Notes</a>
+            <a href="syllabus.html?subject=Basics%20of%20Electrical%20Engineering">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Engineering Physics</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Engineering%20Physics">PYQ</a>
+            <a href="notes.html?subject=Engineering%20Physics">Notes</a>
+            <a href="syllabus.html?subject=Engineering%20Physics">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Principal of Programming Language</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Principal%20of%20Programming%20Language">PYQ</a>
+            <a href="notes.html?subject=Principal%20of%20Programming%20Language">Notes</a>
+            <a href="syllabus.html?subject=Principal%20of%20Programming%20Language">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Design Thinking</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Design%20Thinking">PYQ</a>
+            <a href="notes.html?subject=Design%20Thinking">Notes</a>
+            <a href="syllabus.html?subject=Design%20Thinking">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Professional Communication Skills</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Professional%20Communication%20Skills">PYQ</a>
+            <a href="notes.html?subject=Professional%20Communication%20Skills">Notes</a>
+            <a href="syllabus.html?subject=Professional%20Communication%20Skills">Syllabus</a>
+          </div>
+        </div>
+      </div>
+      <h3 class="semester-title">Semester 2</h3>
+      <div class="subject-grid">
+        <div class="subject-card searchable">
+          <h3>Engineering Graphics</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Engineering%20Graphics">PYQ</a>
+            <a href="notes.html?subject=Engineering%20Graphics">Notes</a>
+            <a href="syllabus.html?subject=Engineering%20Graphics">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Applied Mathematics-II</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Applied%20Mathematics-II">PYQ</a>
+            <a href="notes.html?subject=Applied%20Mathematics-II">Notes</a>
+            <a href="syllabus.html?subject=Applied%20Mathematics-II">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Indian Knowledge System</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Indian%20Knowledge%20System">PYQ</a>
+            <a href="notes.html?subject=Indian%20Knowledge%20System">Notes</a>
+            <a href="syllabus.html?subject=Indian%20Knowledge%20System">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Engineering Chemistry</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Engineering%20Chemistry">PYQ</a>
+            <a href="notes.html?subject=Engineering%20Chemistry">Notes</a>
+            <a href="syllabus.html?subject=Engineering%20Chemistry">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Basics of Electronics Engineering</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Basics%20of%20Electronics%20Engineering">PYQ</a>
+            <a href="notes.html?subject=Basics%20of%20Electronics%20Engineering">Notes</a>
+            <a href="syllabus.html?subject=Basics%20of%20Electronics%20Engineering">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Programming for Problem Solving</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Programming%20for%20Problem%20Solving">PYQ</a>
+            <a href="notes.html?subject=Programming%20for%20Problem%20Solving">Notes</a>
+            <a href="syllabus.html?subject=Programming%20for%20Problem%20Solving">Syllabus</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-box year-content hidden" id="ai2">
+      <h2>Artificial Intelligence - 2nd Year</h2>
+      <div class="subject-grid">
+        <div class="subject-card searchable">
+          <h3>Artificial Intelligence</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Artificial%20Intelligence">PYQ</a>
+            <a href="notes.html?subject=Artificial%20Intelligence">Notes</a>
+            <a href="syllabus.html?subject=Artificial%20Intelligence">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Python Programming</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Python%20Programming">PYQ</a>
+            <a href="notes.html?subject=Python%20Programming">Notes</a>
+            <a href="syllabus.html?subject=Python%20Programming">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Machine Learning Basics</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Machine%20Learning%20Basics">PYQ</a>
+            <a href="notes.html?subject=Machine%20Learning%20Basics">Notes</a>
+            <a href="syllabus.html?subject=Machine%20Learning%20Basics">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Data Analytics</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Data%20Analytics">PYQ</a>
+            <a href="notes.html?subject=Data%20Analytics">Notes</a>
+            <a href="syllabus.html?subject=Data%20Analytics">Syllabus</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-box year-content hidden" id="eee1">
+      <h2>Electrical and Electronics - 1st Year</h2>
+      <h3 class="semester-title">Semester 1</h3>
+      <div class="subject-grid">
+        <div class="subject-card searchable">
+          <h3>Applied Mathematics-I</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Applied%20Mathematics-I">PYQ</a>
+            <a href="notes.html?subject=Applied%20Mathematics-I">Notes</a>
+            <a href="syllabus.html?subject=Applied%20Mathematics-I">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Basics of Electrical Engineering</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Basics%20of%20Electrical%20Engineering">PYQ</a>
+            <a href="notes.html?subject=Basics%20of%20Electrical%20Engineering">Notes</a>
+            <a href="syllabus.html?subject=Basics%20of%20Electrical%20Engineering">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Engineering Physics</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Engineering%20Physics">PYQ</a>
+            <a href="notes.html?subject=Engineering%20Physics">Notes</a>
+            <a href="syllabus.html?subject=Engineering%20Physics">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Principal of Programming Language</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Principal%20of%20Programming%20Language">PYQ</a>
+            <a href="notes.html?subject=Principal%20of%20Programming%20Language">Notes</a>
+            <a href="syllabus.html?subject=Principal%20of%20Programming%20Language">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Design Thinking</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Design%20Thinking">PYQ</a>
+            <a href="notes.html?subject=Design%20Thinking">Notes</a>
+            <a href="syllabus.html?subject=Design%20Thinking">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Professional Communication Skills</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Professional%20Communication%20Skills">PYQ</a>
+            <a href="notes.html?subject=Professional%20Communication%20Skills">Notes</a>
+            <a href="syllabus.html?subject=Professional%20Communication%20Skills">Syllabus</a>
+          </div>
+        </div>
+      </div>
+      <h3 class="semester-title">Semester 2</h3>
+      <div class="subject-grid">
+        <div class="subject-card searchable">
+          <h3>Engineering Graphics</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Engineering%20Graphics">PYQ</a>
+            <a href="notes.html?subject=Engineering%20Graphics">Notes</a>
+            <a href="syllabus.html?subject=Engineering%20Graphics">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Applied Mathematics-II</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Applied%20Mathematics-II">PYQ</a>
+            <a href="notes.html?subject=Applied%20Mathematics-II">Notes</a>
+            <a href="syllabus.html?subject=Applied%20Mathematics-II">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Indian Knowledge System</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Indian%20Knowledge%20System">PYQ</a>
+            <a href="notes.html?subject=Indian%20Knowledge%20System">Notes</a>
+            <a href="syllabus.html?subject=Indian%20Knowledge%20System">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Engineering Chemistry</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Engineering%20Chemistry">PYQ</a>
+            <a href="notes.html?subject=Engineering%20Chemistry">Notes</a>
+            <a href="syllabus.html?subject=Engineering%20Chemistry">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Basics of Electronics Engineering</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Basics%20of%20Electronics%20Engineering">PYQ</a>
+            <a href="notes.html?subject=Basics%20of%20Electronics%20Engineering">Notes</a>
+            <a href="syllabus.html?subject=Basics%20of%20Electronics%20Engineering">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Programming for Problem Solving</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Programming%20for%20Problem%20Solving">PYQ</a>
+            <a href="notes.html?subject=Programming%20for%20Problem%20Solving">Notes</a>
+            <a href="syllabus.html?subject=Programming%20for%20Problem%20Solving">Syllabus</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-box year-content hidden" id="eee2">
+      <h2>Electrical and Electronics - 2nd Year</h2>
+      <div class="subject-grid">
+        <div class="subject-card searchable">
+          <h3>Network Analysis</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Network%20Analysis">PYQ</a>
+            <a href="notes.html?subject=Network%20Analysis">Notes</a>
+            <a href="syllabus.html?subject=Network%20Analysis">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Digital Electronics</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Digital%20Electronics">PYQ</a>
+            <a href="notes.html?subject=Digital%20Electronics">Notes</a>
+            <a href="syllabus.html?subject=Digital%20Electronics">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Electrical Machines</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Electrical%20Machines">PYQ</a>
+            <a href="notes.html?subject=Electrical%20Machines">Notes</a>
+            <a href="syllabus.html?subject=Electrical%20Machines">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Signals and Systems</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Signals%20and%20Systems">PYQ</a>
+            <a href="notes.html?subject=Signals%20and%20Systems">Notes</a>
+            <a href="syllabus.html?subject=Signals%20and%20Systems">Syllabus</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-box year-content hidden" id="civ1">
+      <h2>Civil Engineering - 1st Year</h2>
+      <h3 class="semester-title">Semester 1</h3>
+      <div class="subject-grid">
+        <div class="subject-card searchable">
+          <h3>Applied Mathematics-I</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Applied%20Mathematics-I">PYQ</a>
+            <a href="notes.html?subject=Applied%20Mathematics-I">Notes</a>
+            <a href="syllabus.html?subject=Applied%20Mathematics-I">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Basics of Electrical Engineering</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Basics%20of%20Electrical%20Engineering">PYQ</a>
+            <a href="notes.html?subject=Basics%20of%20Electrical%20Engineering">Notes</a>
+            <a href="syllabus.html?subject=Basics%20of%20Electrical%20Engineering">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Engineering Physics</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Engineering%20Physics">PYQ</a>
+            <a href="notes.html?subject=Engineering%20Physics">Notes</a>
+            <a href="syllabus.html?subject=Engineering%20Physics">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Principal of Programming Language</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Principal%20of%20Programming%20Language">PYQ</a>
+            <a href="notes.html?subject=Principal%20of%20Programming%20Language">Notes</a>
+            <a href="syllabus.html?subject=Principal%20of%20Programming%20Language">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Design Thinking</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Design%20Thinking">PYQ</a>
+            <a href="notes.html?subject=Design%20Thinking">Notes</a>
+            <a href="syllabus.html?subject=Design%20Thinking">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Professional Communication Skills</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Professional%20Communication%20Skills">PYQ</a>
+            <a href="notes.html?subject=Professional%20Communication%20Skills">Notes</a>
+            <a href="syllabus.html?subject=Professional%20Communication%20Skills">Syllabus</a>
+          </div>
+        </div>
+      </div>
+      <h3 class="semester-title">Semester 2</h3>
+      <div class="subject-grid">
+        <div class="subject-card searchable">
+          <h3>Engineering Graphics</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Engineering%20Graphics">PYQ</a>
+            <a href="notes.html?subject=Engineering%20Graphics">Notes</a>
+            <a href="syllabus.html?subject=Engineering%20Graphics">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Applied Mathematics-II</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Applied%20Mathematics-II">PYQ</a>
+            <a href="notes.html?subject=Applied%20Mathematics-II">Notes</a>
+            <a href="syllabus.html?subject=Applied%20Mathematics-II">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Indian Knowledge System</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Indian%20Knowledge%20System">PYQ</a>
+            <a href="notes.html?subject=Indian%20Knowledge%20System">Notes</a>
+            <a href="syllabus.html?subject=Indian%20Knowledge%20System">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Engineering Chemistry</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Engineering%20Chemistry">PYQ</a>
+            <a href="notes.html?subject=Engineering%20Chemistry">Notes</a>
+            <a href="syllabus.html?subject=Engineering%20Chemistry">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Basics of Electronics Engineering</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Basics%20of%20Electronics%20Engineering">PYQ</a>
+            <a href="notes.html?subject=Basics%20of%20Electronics%20Engineering">Notes</a>
+            <a href="syllabus.html?subject=Basics%20of%20Electronics%20Engineering">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Programming for Problem Solving</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Programming%20for%20Problem%20Solving">PYQ</a>
+            <a href="notes.html?subject=Programming%20for%20Problem%20Solving">Notes</a>
+            <a href="syllabus.html?subject=Programming%20for%20Problem%20Solving">Syllabus</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-box year-content hidden" id="civ2">
+      <h2>Civil Engineering - 2nd Year</h2>
+      <div class="subject-grid">
+        <div class="subject-card searchable">
+          <h3>Surveying</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Surveying">PYQ</a>
+            <a href="notes.html?subject=Surveying">Notes</a>
+            <a href="syllabus.html?subject=Surveying">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Building Materials</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Building%20Materials">PYQ</a>
+            <a href="notes.html?subject=Building%20Materials">Notes</a>
+            <a href="syllabus.html?subject=Building%20Materials">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Fluid Mechanics</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Fluid%20Mechanics">PYQ</a>
+            <a href="notes.html?subject=Fluid%20Mechanics">Notes</a>
+            <a href="syllabus.html?subject=Fluid%20Mechanics">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Structural Analysis</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Structural%20Analysis">PYQ</a>
+            <a href="notes.html?subject=Structural%20Analysis">Notes</a>
+            <a href="syllabus.html?subject=Structural%20Analysis">Syllabus</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-box year-content hidden" id="mech1">
+      <h2>Mechanical Engineering - 1st Year</h2>
+      <h3 class="semester-title">Semester 1</h3>
+      <div class="subject-grid">
+        <div class="subject-card searchable">
+          <h3>Applied Mathematics-I</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Applied%20Mathematics-I">PYQ</a>
+            <a href="notes.html?subject=Applied%20Mathematics-I">Notes</a>
+            <a href="syllabus.html?subject=Applied%20Mathematics-I">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Basics of Electrical Engineering</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Basics%20of%20Electrical%20Engineering">PYQ</a>
+            <a href="notes.html?subject=Basics%20of%20Electrical%20Engineering">Notes</a>
+            <a href="syllabus.html?subject=Basics%20of%20Electrical%20Engineering">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Engineering Physics</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Engineering%20Physics">PYQ</a>
+            <a href="notes.html?subject=Engineering%20Physics">Notes</a>
+            <a href="syllabus.html?subject=Engineering%20Physics">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Principal of Programming Language</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Principal%20of%20Programming%20Language">PYQ</a>
+            <a href="notes.html?subject=Principal%20of%20Programming%20Language">Notes</a>
+            <a href="syllabus.html?subject=Principal%20of%20Programming%20Language">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Design Thinking</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Design%20Thinking">PYQ</a>
+            <a href="notes.html?subject=Design%20Thinking">Notes</a>
+            <a href="syllabus.html?subject=Design%20Thinking">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Professional Communication Skills</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Professional%20Communication%20Skills">PYQ</a>
+            <a href="notes.html?subject=Professional%20Communication%20Skills">Notes</a>
+            <a href="syllabus.html?subject=Professional%20Communication%20Skills">Syllabus</a>
+          </div>
+        </div>
+      </div>
+      <h3 class="semester-title">Semester 2</h3>
+      <div class="subject-grid">
+        <div class="subject-card searchable">
+          <h3>Engineering Graphics</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Engineering%20Graphics">PYQ</a>
+            <a href="notes.html?subject=Engineering%20Graphics">Notes</a>
+            <a href="syllabus.html?subject=Engineering%20Graphics">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Applied Mathematics-II</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Applied%20Mathematics-II">PYQ</a>
+            <a href="notes.html?subject=Applied%20Mathematics-II">Notes</a>
+            <a href="syllabus.html?subject=Applied%20Mathematics-II">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Indian Knowledge System</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Indian%20Knowledge%20System">PYQ</a>
+            <a href="notes.html?subject=Indian%20Knowledge%20System">Notes</a>
+            <a href="syllabus.html?subject=Indian%20Knowledge%20System">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Engineering Chemistry</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Engineering%20Chemistry">PYQ</a>
+            <a href="notes.html?subject=Engineering%20Chemistry">Notes</a>
+            <a href="syllabus.html?subject=Engineering%20Chemistry">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Basics of Electronics Engineering</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Basics%20of%20Electronics%20Engineering">PYQ</a>
+            <a href="notes.html?subject=Basics%20of%20Electronics%20Engineering">Notes</a>
+            <a href="syllabus.html?subject=Basics%20of%20Electronics%20Engineering">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Programming for Problem Solving</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Programming%20for%20Problem%20Solving">PYQ</a>
+            <a href="notes.html?subject=Programming%20for%20Problem%20Solving">Notes</a>
+            <a href="syllabus.html?subject=Programming%20for%20Problem%20Solving">Syllabus</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-box year-content hidden" id="mech2">
+      <h2>Mechanical Engineering - 2nd Year</h2>
+      <div class="subject-grid">
+        <div class="subject-card searchable">
+          <h3>Thermodynamics</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Thermodynamics">PYQ</a>
+            <a href="notes.html?subject=Thermodynamics">Notes</a>
+            <a href="syllabus.html?subject=Thermodynamics">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Strength of Materials</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Strength%20of%20Materials">PYQ</a>
+            <a href="notes.html?subject=Strength%20of%20Materials">Notes</a>
+            <a href="syllabus.html?subject=Strength%20of%20Materials">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Manufacturing Processes</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Manufacturing%20Processes">PYQ</a>
+            <a href="notes.html?subject=Manufacturing%20Processes">Notes</a>
+            <a href="syllabus.html?subject=Manufacturing%20Processes">Syllabus</a>
+          </div>
+        </div>
+        <div class="subject-card searchable">
+          <h3>Machine Drawing</h3>
+          <div class="buttons">
+            <a href="pyq.html?subject=Machine%20Drawing">PYQ</a>
+            <a href="notes.html?subject=Machine%20Drawing">Notes</a>
+            <a href="syllabus.html?subject=Machine%20Drawing">Syllabus</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+
+  <!-- ========================= -->
+  <!-- FOOTER -->
+  <!-- ========================= -->
+
+  <footer id="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="images/bamu%20logo.webp" alt="BAMU logo">
+        <div>
+          <h2>Engineer Vault</h2>
+          <p>One-stop study support for Notes, PYQs and Syllabus under the NEP curriculum.</p>
+        </div>
+      </div>
+
+      <p class="contact">
+        Need help? <a href="mailto:mindfactsh@gmail.com">mindfactsh@gmail.com</a>
+      </p>
+
+      <p class="copyright">
+        Created by Rajnandini Thalkari. &copy; 2026 All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+
+  <!-- JS -->
+  <script src="script.js"></script>
+
+</body>
+</html>
