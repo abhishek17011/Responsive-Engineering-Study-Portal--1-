@@ -76,6 +76,8 @@
     const params = new URLSearchParams(location.search);
     const selectedSubject = params.get('subject');
     const selectedSemester = params.get('semester');
+    const selectedBranch = (params.get('branch') || 'cse').toLowerCase();
+    const selectedYear = params.get('year');
     const table = document.getElementById('resource-table');
     const desc = document.getElementById('page-desc');
     const semesterSubjects = {
@@ -109,19 +111,257 @@
       ]
     };
 
+    const branchYear1SemesterSubjects = {
+      cse: {
+        1: [
+          "Applied Mathematics-I",
+          "Basics of Electrical Engineering",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Principal of Programming Language",
+          "Design Thinking",
+          "Professional Communication Skills"
+        ],
+        2: [
+          "Engineering Graphics",
+          "Applied Mathematics-II",
+          "Indian Knowledge System",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Basics of Electronics Engineering",
+          "Programming for Problem Solving"
+        ]
+      },
+      ai: {
+        1: [
+          "Applied Mathematics-I",
+          "Basics of Electrical Engineering",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Principal of Programming Language",
+          "Design Thinking",
+          "Professional Communication Skills"
+        ],
+        2: [
+          "Engineering Graphics",
+          "Applied Mathematics-II",
+          "Indian Knowledge System",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Basics of Electronics Engineering",
+          "Programming for Problem Solving"
+        ]
+      },
+      eee: {
+        1: [
+          "Applied Mathematics-I",
+          "Basics of Electrical Engineering",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Principal of Programming Language",
+          "Design Thinking",
+          "Professional Communication Skills"
+        ],
+        2: [
+          "Engineering Graphics",
+          "Applied Mathematics-II",
+          "Indian Knowledge System",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Basics of Electronics Engineering",
+          "Programming for Problem Solving"
+        ]
+      },
+      civ: {
+        1: [
+          "Applied Mathematics-I",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Design Thinking",
+          "Professional Communication Skills",
+          "Engineering Mechanics",
+          "Engineering Graphics"
+        ],
+        2: [
+          "Engineering Graphics",
+          "Applied Mathematics-II",
+          "Indian Knowledge System",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Programming for Problem Solving Mc",
+          "Basics of Civil Engineering",
+          "Basics of Electrical and Electronics Engineering",
+          "Basics of Mechanical Engineering"
+        ]
+      },
+      mech: {
+        1: [
+          "Applied Mathematics-I",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Design Thinking",
+          "Professional Communication Skills",
+          "Engineering Mechanics",
+          "Engineering Graphics"
+        ],
+        2: [
+          "Engineering Graphics",
+          "Applied Mathematics-II",
+          "Indian Knowledge System",
+          "Engineering Physics",
+          "Engineering Chemistry",
+          "Programming for Problem Solving Mc",
+          "Basics of Civil Engineering",
+          "Basics of Electrical and Electronics Engineering",
+          "Basics of Mechanical Engineering"
+        ]
+      }
+    };
+
+    const branchYear2SemesterSubjects = {
+      cse: {
+        3: [
+          "Data Structures",
+          "OOP using JAVA",
+          "Discrete Mathematics",
+          "Industrial Automation",
+          "Indian Constitution",
+          "Risk Management and Compliances",
+          "Entrepreneurship Development",
+          "Environmental Studies"
+        ],
+        4: [
+          "Operating System",
+          "Computer Network",
+          "Marathi",
+          "Probability and Statistics",
+          "Universal Human Values",
+          "Industrial Management",
+          "Business Intelligence",
+          "Robotics Kinematics and Dynamics"
+        ]
+      },
+      ai: {
+        3: [
+          "AI MOCK Subject 3 - 1",
+          "AI MOCK Subject 3 - 2",
+          "AI MOCK Subject 3 - 3",
+          "AI MOCK Subject 3 - 4",
+          "AI MOCK Subject 3 - 5",
+          "AI MOCK Subject 3 - 6",
+          "AI MOCK Subject 3 - 7",
+          "AI MOCK Subject 3 - 8"
+        ],
+        4: [
+          "AI MOCK Subject 4 - 1",
+          "AI MOCK Subject 4 - 2",
+          "AI MOCK Subject 4 - 3",
+          "AI MOCK Subject 4 - 4",
+          "AI MOCK Subject 4 - 5",
+          "AI MOCK Subject 4 - 6",
+          "AI MOCK Subject 4 - 7",
+          "AI MOCK Subject 4 - 8"
+        ]
+      },
+      eee: {
+        3: [
+          "EEE MOCK Subject 3 - 1",
+          "EEE MOCK Subject 3 - 2",
+          "EEE MOCK Subject 3 - 3",
+          "EEE MOCK Subject 3 - 4",
+          "EEE MOCK Subject 3 - 5",
+          "EEE MOCK Subject 3 - 6",
+          "EEE MOCK Subject 3 - 7",
+          "EEE MOCK Subject 3 - 8"
+        ],
+        4: [
+          "EEE MOCK Subject 4 - 1",
+          "EEE MOCK Subject 4 - 2",
+          "EEE MOCK Subject 4 - 3",
+          "EEE MOCK Subject 4 - 4",
+          "EEE MOCK Subject 4 - 5",
+          "EEE MOCK Subject 4 - 6",
+          "EEE MOCK Subject 4 - 7",
+          "EEE MOCK Subject 4 - 8"
+        ]
+      },
+      civ: {
+        3: [
+          "CIV MOCK Subject 3 - 1",
+          "CIV MOCK Subject 3 - 2",
+          "CIV MOCK Subject 3 - 3",
+          "CIV MOCK Subject 3 - 4",
+          "CIV MOCK Subject 3 - 5",
+          "CIV MOCK Subject 3 - 6",
+          "CIV MOCK Subject 3 - 7",
+          "CIV MOCK Subject 3 - 8"
+        ],
+        4: [
+          "CIV MOCK Subject 4 - 1",
+          "CIV MOCK Subject 4 - 2",
+          "CIV MOCK Subject 4 - 3",
+          "CIV MOCK Subject 4 - 4",
+          "CIV MOCK Subject 4 - 5",
+          "CIV MOCK Subject 4 - 6",
+          "CIV MOCK Subject 4 - 7",
+          "CIV MOCK Subject 4 - 8"
+        ]
+      },
+      mech: {
+        3: [
+          "MECH MOCK Subject 3 - 1",
+          "MECH MOCK Subject 3 - 2",
+          "MECH MOCK Subject 3 - 3",
+          "MECH MOCK Subject 3 - 4",
+          "MECH MOCK Subject 3 - 5",
+          "MECH MOCK Subject 3 - 6",
+          "MECH MOCK Subject 3 - 7",
+          "MECH MOCK Subject 3 - 8"
+        ],
+        4: [
+          "MECH MOCK Subject 4 - 1",
+          "MECH MOCK Subject 4 - 2",
+          "MECH MOCK Subject 4 - 3",
+          "MECH MOCK Subject 4 - 4",
+          "MECH MOCK Subject 4 - 5",
+          "MECH MOCK Subject 4 - 6",
+          "MECH MOCK Subject 4 - 7",
+          "MECH MOCK Subject 4 - 8"
+        ]
+      }
+    };
+
+    function getSubjectsForNotesSemester(semester) {
+      const semNum = Number(semester);
+
+      if (semNum === 1 || semNum === 2) {
+        const branchEntry = branchYear1SemesterSubjects[selectedBranch] || branchYear1SemesterSubjects['cse'];
+        return branchEntry[semNum] || semesterSubjects[semNum];
+      }
+
+      if (semNum === 3 || semNum === 4) {
+        const branchEntry = branchYear2SemesterSubjects[selectedBranch] || branchYear2SemesterSubjects['cse'];
+        return branchEntry[semNum] || semesterSubjects[semNum];
+      }
+
+      return semesterSubjects[semNum] || [];
+    }
+
     if (selectedSubject && data[selectedSubject]) {
       desc.textContent = data[selectedSubject].file
         ? `You selected ${selectedSubject}. Use the button below to download the ${resourceLabel}.`
         : `You selected ${selectedSubject}. ${resourceLabel} file is coming soon.`;
-    } else if (selectedSemester && semesterSubjects[selectedSemester]) {
+    } else if (selectedSemester) {
+      const semSubjects = getSubjectsForNotesSemester(selectedSemester);
       desc.textContent = `Showing Semester ${selectedSemester} ${resourceLabel} subjects.`;
     }
 
     const visibleSubjects = selectedSubject && data[selectedSubject]
       ? [selectedSubject]
-      : selectedSemester && semesterSubjects[selectedSemester]
-        ? semesterSubjects[selectedSemester]
+      : selectedSemester
+        ? getSubjectsForNotesSemester(selectedSemester)
         : Object.keys(data);
+
 
     visibleSubjects.forEach(subject => {
       const row = document.createElement('div');
@@ -133,17 +373,19 @@
 
       const action = document.createElement('div');
       action.className = 'resource-action';
-      if (!data[subject].file) {
+
+      const item = data[subject];
+      if (!item || !item.file) {
         const label = document.createElement('span');
         label.className = 'download-missing';
         label.textContent = 'Coming soon';
         action.appendChild(label);
       } else {
         const button = document.createElement('a');
-        button.href = data[subject].file;
+        button.href = item.file;
         button.textContent = `Download ${resourceLabel}`;
         button.className = 'download-btn';
-        button.setAttribute('download', data[subject].file);
+        button.setAttribute('download', item.file);
         action.appendChild(button);
       }
 

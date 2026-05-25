@@ -1,7 +1,0 @@
-Engineer Vault - Engineering Mechanics Notes
-
-Subject: Engineering Mechanics
-Resource: Notes
-Year: 1st Year
-
-This is a sample notes file for Engineering Mechanics. Replace this file with your complete class notes or study material.

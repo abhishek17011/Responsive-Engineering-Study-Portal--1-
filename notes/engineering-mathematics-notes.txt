@@ -1,7 +1,0 @@
-Engineer Vault - Engineering Mathematics Notes
-
-Subject: Engineering Mathematics
-Resource: Notes
-Year: 1st Year
-
-This is a sample notes file for Engineering Mathematics. Replace this file with your actual course notes in PDF, DOCX, or TXT format as needed.
