@@ -269,3 +269,15 @@ topBtn.addEventListener('click', () => {
 // =========================
 
 console.log("Engineer Vault Loaded Successfully 🚀");
+function renamePyqButtons() {
+  document.querySelectorAll('button, a').forEach((element) => {
+    const label = element.textContent.trim();
+
+    if (/^(?:[\u{1F300}-\u{1FAFF}]\s*)?pyq$/iu.test(label)) {
+      element.textContent = 'Previous Year Questions';
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', renamePyqButtons);
+document.addEventListener('click', () => setTimeout(renamePyqButtons, 0));
