@@ -2,8 +2,8 @@
   console.log('[cookie-consent] script loaded');
   const COOKIE_NAME = 'cookie_consent';
   const COOKIE_ACCEPTED = 'accepted';
-  // Reject removed (single-button consent)
   const DAYS_365 = 365;
+
 
   function getCookie(name) {
     const key = encodeURIComponent(name) + '=';
@@ -87,7 +87,9 @@
       return;
     }
 
+
     const okBtn = document.getElementById('cookie-consent-ok');
+
 
     // Single-button UI
     if (okBtn) {
