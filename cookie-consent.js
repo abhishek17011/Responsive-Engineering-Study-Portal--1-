@@ -88,22 +88,33 @@
     }
 
 
-    const okBtn = document.getElementById('cookie-consent-ok');
+  const acceptBtn = document.getElementById('cookie-consent-accept');
+  const rejectBtn = document.getElementById('cookie-consent-reject');
 
-
-    // Single-button UI
-    if (okBtn) {
-      okBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        onChoice(COOKIE_ACCEPTED);
-      });
-    }
-
-    // Har condition me banner visible rahe (unless cookie accepted hai)
-    banner.style.display = '';
-    banner.style.visibility = '';
+  // UI: Accept/Reject buttons (used on your pages)
+  if (acceptBtn) {
+    acceptBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      onChoice(COOKIE_ACCEPTED);
+    });
   }
+
+  if (rejectBtn) {
+    rejectBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      // Reject still counts as a choice to hide the banner on reload.
+      setCookie(COOKIE_NAME, 'rejected', DAYS_365);
+      hideBanner();
+    });
+  }
+
+  // Har condition me banner visible rahe (unless cookie accepted hai)
+  banner.style.display = '';
+  banner.style.visibility = '';
+  }
+
 
 
   if (document.readyState === 'loading') {
