@@ -1,4 +1,5 @@
 (function () {
+  console.log('[cookie-consent] script loaded');
   const COOKIE_NAME = 'cookie_consent';
   const COOKIE_ACCEPTED = 'accepted';
   // Reject removed (single-button consent)
@@ -32,11 +33,17 @@
     const banner = document.getElementById('cookie-consent-banner');
     if (!banner) return;
 
-    // Ensure it disappears even if DOM removal is blocked for any reason.
+    // Ensure it disappears immediately.
     banner.style.display = 'none';
     banner.style.visibility = 'hidden';
+    try {
+      banner.parentNode && banner.parentNode.removeChild(banner);
+    } catch (e) {
+      // ignore
+    }
 
     // Then remove from DOM.
+
     try {
       banner.remove();
     } catch (e) {
@@ -46,7 +53,12 @@
 
 
   function onChoice(value) {
+    console.log('[cookie-consent] onChoice value:', value);
+    // Persist choice before hiding banner.
     setCookie(COOKIE_NAME, value, DAYS_365);
+    console.log('[cookie-consent] after setCookie document.cookie:', document.cookie);
+
+
 
     // Click ke baad feedback (optional). Banner immediate hide hoga.
     const banner = document.getElementById('cookie-consent-banner');
@@ -63,6 +75,8 @@
 
   function init() {
     const existing = getCookie(COOKIE_NAME);
+    console.log('[cookie-consent] existing cookie value:', existing);
+
 
     const banner = document.getElementById('cookie-consent-banner');
     if (!banner) return;
