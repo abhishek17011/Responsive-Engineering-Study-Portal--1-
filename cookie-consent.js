@@ -1,7 +1,7 @@
 (function () {
   const COOKIE_NAME = 'cookie_consent';
   const COOKIE_ACCEPTED = 'accepted';
-  const COOKIE_REJECTED = 'rejected';
+  // Reject removed (single-button consent)
   const DAYS_365 = 365;
 
   function getCookie(name) {
@@ -30,27 +30,65 @@
 
   function hideBanner() {
     const banner = document.getElementById('cookie-consent-banner');
-    if (banner) banner.remove();
+    if (!banner) return;
+
+    // Ensure it disappears even if DOM removal is blocked for any reason.
+    banner.style.display = 'none';
+    banner.style.visibility = 'hidden';
+
+    // Then remove from DOM.
+    try {
+      banner.remove();
+    } catch (e) {
+      // no-op
+    }
   }
+
 
   function onChoice(value) {
     setCookie(COOKIE_NAME, value, DAYS_365);
+
+    // Click ke baad feedback (optional). Banner immediate hide hoga.
+    const banner = document.getElementById('cookie-consent-banner');
+    if (banner) {
+      const textEl = banner.querySelector('.cookie-consent-text');
+      if (textEl) {
+        textEl.textContent = 'Thanks! Cookies accepted.';
+      }
+    }
+
+    // Immediate disappear
     hideBanner();
   }
 
   function init() {
     const existing = getCookie(COOKIE_NAME);
-    if (existing === COOKIE_ACCEPTED || existing === COOKIE_REJECTED) return;
 
     const banner = document.getElementById('cookie-consent-banner');
     if (!banner) return;
 
-    const acceptBtn = document.getElementById('cookie-consent-accept');
-    const rejectBtn = document.getElementById('cookie-consent-reject');
+    // If user already chose earlier, ensure banner is gone immediately.
+    if (existing === COOKIE_ACCEPTED) {
+      hideBanner();
+      return;
+    }
 
-    if (acceptBtn) acceptBtn.addEventListener('click', () => onChoice(COOKIE_ACCEPTED));
-    if (rejectBtn) rejectBtn.addEventListener('click', () => onChoice(COOKIE_REJECTED));
+    const okBtn = document.getElementById('cookie-consent-ok');
+
+    // Single-button UI
+    if (okBtn) {
+      okBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onChoice(COOKIE_ACCEPTED);
+      });
+    }
+
+    // Har condition me banner visible rahe (unless cookie accepted hai)
+    banner.style.display = '';
+    banner.style.visibility = '';
   }
+
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
