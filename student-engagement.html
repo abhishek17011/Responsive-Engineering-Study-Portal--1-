@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Engagement Quiz | Engineer Vault</title>
+  <meta name="description" content="Interactive student engagement quiz with scoreboard for Engineer Vault learners.">
+  <link rel="icon" type="image/webp" href="images/bamu%20logo.webp">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .engagement-page {
+      min-height: 100vh;
+      padding: 76px 8%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.90), rgba(255,243,230,0.88));
+    }
+
+    .engagement-wrap {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.8fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .quiz-panel,
+    .score-panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,248,241,0.96));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: 0 25px 60px rgba(67,42,16,0.08);
+    }
+
+    .quiz-panel {
+      padding: 34px;
+    }
+
+    .score-panel {
+      padding: 26px;
+      position: sticky;
+      top: 108px;
+    }
+
+    .page-kicker {
+      color: var(--accent-strong);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .quiz-title {
+      color: var(--text);
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 14px;
+      text-shadow: 0 0 15px rgba(249,115,22,0.10);
+    }
+
+    .quiz-subtitle {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .question-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      height: 12px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      margin-bottom: 28px;
+      border: 1px solid var(--line);
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      transition: width 0.25s ease;
+    }
+
+    .question-text {
+      color: var(--text);
+      font-size: 25px;
+      line-height: 1.45;
+      margin-bottom: 22px;
+    }
+
+    .option-grid {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .option-btn,
+    .quiz-action {
+      cursor: pointer;
+      font: inherit;
+      border-radius: 14px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+
+    .option-btn {
+      width: 100%;
+      padding: 16px 18px;
+      text-align: left;
+      color: var(--text);
+      background: rgba(255,255,255,0.90);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 24px rgba(67,42,16,0.06);
+      font-weight: 700;
+    }
+
+    .option-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(249,115,22,0.36);
+      background: linear-gradient(135deg, rgba(249,115,22,0.10), rgba(249,115,22,0.16));
+    }
+
+    .option-btn.correct {
+      color: #ffffff;
+      border-color: var(--accent);
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+    }
+
+    .option-btn.wrong {
+      color: var(--accent-strong);
+      border-color: rgba(194,65,12,0.35);
+      background: rgba(255,237,213,0.85);
+    }
+
+    .option-btn:disabled {
+      cursor: default;
+    }
+
+    .feedback {
+      min-height: 28px;
+      color: var(--muted);
+      font-weight: 700;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .quiz-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .quiz-action {
+      padding: 13px 18px;
+      border: none;
+      color: #ffffff;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--accent), var(--action));
+      box-shadow: 0 15px 35px rgba(249,115,22,0.16);
+    }
+
+    .quiz-action.secondary {
+      color: var(--accent-strong);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.88);
+      box-shadow: none;
+    }
+
+    .quiz-action:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 22px 40px rgba(249,115,22,0.20);
+    }
+
+    .score-panel h2 {
+      color: var(--text);
+      font-size: 28px;
+      margin-bottom: 18px;
+    }
+
+    .score-card {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      color: var(--muted);
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--line);
+      font-weight: 800;
+    }
+
+    .score-row strong {
+      color: var(--text);
+    }
+
+    .score-note {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .home-link {
+      display: inline-flex;
+      margin-top: 20px;
+      color: var(--accent-strong);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .home-link:hover {
+      color: var(--accent);
+    }
+
+    @media(max-width: 860px) {
+      .engagement-page {
+        padding: 54px 5%;
+      }
+
+      .engagement-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .score-panel {
+        position: static;
+      }
+
+      .quiz-title {
+        font-size: 34px;
+      }
+    }
+
+    @media(max-width: 500px) {
+      .quiz-panel,
+      .score-panel {
+        padding: 22px;
+        border-radius: 20px;
+      }
+
+      .quiz-title {
+        font-size: 28px;
+      }
+
+      .question-text {
+        font-size: 21px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <marquee behavior="scroll" direction="left" class="top-notice">
+    Student Engagement Quiz | Learn smarter, test faster, and track your score.
+  </marquee>
+
+  <header>
+    <nav class="navbar">
+      <div class="logo">Engineer Vault Quiz</div>
+      <ul class="nav-links" id="navbar-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pyq.html">PYQ</a></li>
+        <li><a href="notes.html">Notes</a></li>
+        <li><a href="syllabus.html">Syllabus</a></li>
+      </ul>
+      <button type="button" class="menu-btn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navbar-links">
+        Menu
+      </button>
+    </nav>
+  </header>
+
+  <main class="engagement-page">
+    <div class="engagement-wrap">
+      <section class="quiz-panel" aria-labelledby="quizHeading">
+        <p class="page-kicker">Student Engagement</p>
+        <h1 class="quiz-title" id="quizHeading">Quick Engineering Quiz</h1>
+        <p class="quiz-subtitle">
+          Answer short questions, get instant feedback, and watch your scoreboard update after every attempt.
+        </p>
+
+        <div class="question-meta">
+          <span id="questionCount">Question 1 of 5</span>
+          <span id="currentScore">Score: 0</span>
+        </div>
+
+        <div class="progress-track" aria-hidden="true">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <h2 class="question-text" id="questionText"></h2>
+        <div class="option-grid" id="optionGrid"></div>
+        <p class="feedback" id="feedback" aria-live="polite"></p>
+
+        <div class="quiz-actions">
+          <button class="quiz-action" type="button" id="nextBtn">Next Question</button>
+          <button class="quiz-action secondary" type="button" id="restartBtn">Restart</button>
+        </div>
+      </section>
+
+      <aside class="score-panel" aria-labelledby="scoreHeading">
+        <h2 id="scoreHeading">Scoreboard</h2>
+        <div class="score-card">
+          <div class="score-row">
+            <span>Current Score</span>
+            <strong id="scoreValue">0/5</strong>
+          </div>
+          <div class="score-row">
+            <span>Attempted</span>
+            <strong id="attemptValue">0</strong>
+          </div>
+          <div class="score-row">
+            <span>Best Score</span>
+            <strong id="bestValue">0/5</strong>
+          </div>
+        </div>
+        <p class="score-note" id="scoreNote">
+          Start the quiz and choose the best answer. Your highest score is saved in this browser.
+        </p>
+        <a class="home-link" href="index.html">Back to Engineer Vault</a>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    const questions = [
+      {
+        question: 'Which habit helps students remember engineering concepts for longer?',
+        options: ['Active recall with short revision', 'Reading once before exam', 'Skipping difficult topics', 'Only watching videos'],
+        answer: 0,
+        detail: 'Active recall makes your brain retrieve the idea, so memory becomes stronger.'
+      },
+      {
+        question: 'What is the best first step before solving a numerical problem?',
+        options: ['Write given data and required answer', 'Guess the final value', 'Start from any formula', 'Check the answer key first'],
+        answer: 0,
+        detail: 'Given data keeps the solution organized and reduces calculation mistakes.'
+      },
+      {
+        question: 'For exam preparation, PYQs are useful because they show:',
+        options: ['Question pattern and repeated topics', 'Only final answers', 'Attendance records', 'College timetable'],
+        answer: 0,
+        detail: 'Previous year questions help you understand important areas and exam style.'
+      },
+      {
+        question: 'Which study session is usually more effective?',
+        options: ['25 to 40 focused minutes with a small break', '5 hours without pause', 'Studying while multitasking', 'Waiting until midnight every day'],
+        answer: 0,
+        detail: 'Focused blocks with short breaks make learning steady and less tiring.'
+      },
+      {
+        question: 'When a topic feels confusing, what should a student do first?',
+        options: ['Break it into smaller parts', 'Leave the subject completely', 'Memorize without meaning', 'Avoid asking doubts'],
+        answer: 0,
+        detail: 'Small parts make hard topics easier to understand and revise.'
+      }
+    ];
+
+    const questionCount = document.getElementById('questionCount');
+    const currentScore = document.getElementById('currentScore');
+    const progressBar = document.getElementById('progressBar');
+    const questionText = document.getElementById('questionText');
+    const optionGrid = document.getElementById('optionGrid');
+    const feedback = document.getElementById('feedback');
+    const nextBtn = document.getElementById('nextBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const scoreValue = document.getElementById('scoreValue');
+    const attemptValue = document.getElementById('attemptValue');
+    const bestValue = document.getElementById('bestValue');
+    const scoreNote = document.getElementById('scoreNote');
+    const menuBtn = document.querySelector('.menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+
+    let activeQuestion = 0;
+    let score = 0;
+    let answered = false;
+    let bestScore = Number(localStorage.getItem('engagementQuizBestScore')) || 0;
+
+    function updateScoreboard() {
+      scoreValue.textContent = `${score}/${questions.length}`;
+      attemptValue.textContent = `${activeQuestion + (answered ? 1 : 0)}`;
+      bestValue.textContent = `${bestScore}/${questions.length}`;
+      currentScore.textContent = `Score: ${score}`;
+    }
+
+    function renderQuestion() {
+      const item = questions[activeQuestion];
+      answered = false;
+      questionCount.textContent = `Question ${activeQuestion + 1} of ${questions.length}`;
+      questionText.textContent = item.question;
+      feedback.textContent = '';
+      progressBar.style.width = `${(activeQuestion / questions.length) * 100}%`;
+      nextBtn.disabled = true;
+      nextBtn.textContent = activeQuestion === questions.length - 1 ? 'Finish Quiz' : 'Next Question';
+      optionGrid.innerHTML = '';
+
+      item.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'option-btn';
+        button.type = 'button';
+        button.textContent = option;
+        button.addEventListener('click', () => selectAnswer(index));
+        optionGrid.appendChild(button);
+      });
+
+      updateScoreboard();
+    }
+
+    function selectAnswer(selectedIndex) {
+      if (answered) {
+        return;
+      }
+
+      const item = questions[activeQuestion];
+      const buttons = optionGrid.querySelectorAll('.option-btn');
+      answered = true;
+
+      buttons.forEach((button, index) => {
+        button.disabled = true;
+        if (index === item.answer) {
+          button.classList.add('correct');
+        }
+      });
+
+      if (selectedIndex === item.answer) {
+        score += 1;
+        feedback.textContent = `Correct. ${item.detail}`;
+      } else {
+        buttons[selectedIndex].classList.add('wrong');
+        feedback.textContent = `Not quite. ${item.detail}`;
+      }
+
+      nextBtn.disabled = false;
+      progressBar.style.width = `${((activeQuestion + 1) / questions.length) * 100}%`;
+      updateScoreboard();
+    }
+
+    function finishQuiz() {
+      if (score > bestScore) {
+        bestScore = score;
+        localStorage.setItem('engagementQuizBestScore', String(bestScore));
+      }
+
+      questionText.textContent = 'Quiz Completed';
+      optionGrid.innerHTML = '';
+      feedback.textContent = `You scored ${score} out of ${questions.length}. Restart anytime for another attempt.`;
+      scoreNote.textContent = score === questions.length
+        ? 'Excellent work. Perfect score!'
+        : 'Good attempt. Review the missed concepts and try again.';
+      nextBtn.disabled = true;
+      progressBar.style.width = '100%';
+      updateScoreboard();
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (!answered) {
+        return;
+      }
+
+      if (activeQuestion === questions.length - 1) {
+        finishQuiz();
+        return;
+      }
+
+      activeQuestion += 1;
+      renderQuestion();
+    });
+
+    restartBtn.addEventListener('click', () => {
+      activeQuestion = 0;
+      score = 0;
+      scoreNote.textContent = 'Start the quiz and choose the best answer. Your highest score is saved in this browser.';
+      renderQuestion();
+    });
+
+    if (menuBtn && navLinks) {
+      menuBtn.addEventListener('click', () => {
+        const expanded = menuBtn.getAttribute('aria-expanded') === 'true';
+        navLinks.classList.toggle('active');
+        menuBtn.setAttribute('aria-expanded', String(!expanded));
+      });
+    }
+
+    renderQuestion();
+  </script>
+</body>
+
+</html>
