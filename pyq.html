@@ -726,36 +726,18 @@
       previewPanel.classList.remove('hidden');
       previewPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-      try {
-        const response = await fetch(getFreshFileUrl(filePath), {
-          cache: 'no-store',
-          headers: {
-            'Cache-Control': 'no-cache'
-          }
-        });
+      const iframe = document.createElement('iframe');
+      iframe.src = getCleanPreviewUrl(filePath);
+      iframe.title = `${subject} PYQ Preview`;
+      iframe.className = 'pdf-preview-frame';
+      iframe.loading = 'lazy';
 
-        if (!response.ok) {
-          throw new Error('PDF preview unavailable');
-        }
+      iframe.onerror = () => {
+        previewContent.innerHTML = `<span style="color: #dc2626; font-weight: 600;">${subject} PYQ preview failed.</span>`;
+      };
 
-        const blob = await response.blob();
-        currentPreviewObjectUrl = URL.createObjectURL(blob);
-
-        const iframe = document.createElement('iframe');
-        iframe.src = `${currentPreviewObjectUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&page=1`;
-        iframe.title = `${subject} PYQ Preview`;
-        iframe.className = 'pdf-preview-frame';
-        iframe.loading = 'lazy';
-
-        iframe.onerror = () => {
-          previewContent.innerHTML = `<span style="color: #16a34a; font-weight: 600;">${subject} PYQ is not available now.</span>`;
-        };
-
-        previewContent.innerHTML = '';
-        previewContent.appendChild(iframe);
-      } catch (error) {
-        previewContent.innerHTML = `<span style="color: #16a34a; font-weight: 600;">${subject} PYQ is not available now.</span>`;
-      }
+      previewContent.innerHTML = '';
+      previewContent.appendChild(iframe);
     }
 
     function hidePreview() {

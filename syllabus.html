@@ -228,49 +228,26 @@
     async function showPreview() {
       previewTitle.textContent = `${syllabusTitle} Preview`;
 
-      // Embed PDF in preview panel (better UX than fetching as text).
       clearPreviewObjectUrl();
       previewContent.innerHTML = '<span>Loading latest PDF preview...</span>';
       previewPanel.classList.remove('hidden');
       previewPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-      try {
-        const response = await fetch(getFreshFileUrl(filePath), {
-          cache: 'no-store',
-          headers: {
-            'Cache-Control': 'no-cache'
-          }
-        });
+      const iframe = document.createElement('iframe');
+      iframe.src = getCleanPreviewUrl(filePath);
+      iframe.title = syllabusTitle;
+      iframe.className = 'pdf-preview-frame';
+      iframe.loading = 'lazy';
 
-        if (!response.ok) {
-          throw new Error('PDF preview unavailable');
-        }
+      iframe.onerror = () => {
+        previewContent.innerHTML = `<p style="color:#dc2626;font-weight:600;">${syllabusTitle} preview failed.</p>`;
+      };
 
-        const blob = await response.blob();
-        currentPreviewObjectUrl = URL.createObjectURL(blob);
+      previewContent.innerHTML = '';
+      previewContent.appendChild(iframe);
 
-        const iframe = document.createElement('iframe');
-        iframe.src = `${currentPreviewObjectUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&page=1`;
-        iframe.title = syllabusTitle;
-        iframe.className = 'pdf-preview-frame';
-        iframe.loading = 'lazy';
-
-        iframe.onerror = () => {
-          previewPanel.classList.remove('hidden');
-          previewContent.innerHTML = `<p style="color:#16a34a;font-weight:600;">${syllabusTitle} is not available soon.</p>`;
-        };
-
-        previewContent.innerHTML = '';
-        previewContent.appendChild(iframe);
-      } catch (error) {
-        previewPanel.classList.remove('hidden');
-        previewContent.innerHTML = `<p style="color:#16a34a;font-weight:600;">${syllabusTitle} is not available soon.</p>`;
-      }
-
-      // Also show a fallback message immediately if file path is missing.
-      // (This avoids a blank preview UI for missing PDFs.)
       if (!filePath) {
-        previewContent.innerHTML = `<p style="color:#16a34a;font-weight:600;">${syllabusTitle} is not available soon.</p>`;
+        previewContent.innerHTML = `<p style="color:#dc2626;font-weight:600;">${syllabusTitle} preview failed.</p>`;
       }
     }
 
