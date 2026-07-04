@@ -545,8 +545,13 @@
       return availablePyqFiles.has(filePath.toLowerCase());
     }
 
+    function getFreshFileUrl(filePath) {
+      const separator = filePath.includes('?') ? '&' : '?';
+      return `${filePath}${separator}v=${Date.now()}`;
+    }
+
     function getCleanPreviewUrl(filePath) {
-      return `${filePath}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`;
+      return `${getFreshFileUrl(filePath)}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&page=1`;
     }
 
     function createExamButton(exam) {
@@ -606,11 +611,14 @@
       action.appendChild(previewButton);
 
       const link = document.createElement('a');
-      link.href = isAvailable ? filePath : '#';
+      link.href = isAvailable ? getFreshFileUrl(filePath) : '#';
       link.textContent = isAvailable ? `Download PYQ` : `Not Available`;
       link.className = 'download-btn';
       if (isAvailable) {
         link.setAttribute('download', filePath);
+        link.addEventListener('click', () => {
+          link.href = getFreshFileUrl(filePath);
+        });
       } else {
         link.setAttribute('aria-disabled', 'true');
         link.addEventListener('click', (event) => {
@@ -651,9 +659,7 @@
       const iframe = document.createElement('iframe');
       iframe.src = getCleanPreviewUrl(filePath);
       iframe.title = `${subject} PYQ Preview`;
-      iframe.style.width = '100%';
-      iframe.style.height = '420px';
-      iframe.style.border = 'none';
+      iframe.className = 'pdf-preview-frame';
       iframe.loading = 'lazy';
 
       iframe.onerror = () => {
@@ -666,7 +672,9 @@
 
     function hidePreview() {
       const previewPanel = document.getElementById('previewPanel');
+      const previewContent = document.getElementById('previewContent');
       previewPanel.classList.add('hidden');
+      previewContent.innerHTML = '';
     }
 
     function renderPage() {
@@ -682,8 +690,12 @@
       exams.forEach(exam => examControls.appendChild(createExamButton(exam)));
 
       const previewPanel = document.getElementById('previewPanel');
+      const previewContent = document.getElementById('previewContent');
       if (previewPanel) {
         previewPanel.classList.add('hidden');
+      }
+      if (previewContent) {
+        previewContent.innerHTML = '';
       }
 
       if (!selectedExam) {

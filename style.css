@@ -842,6 +842,21 @@ body.loaded{
   border:1px solid var(--line);
 }
 
+.preview-content:has(.pdf-preview-frame){
+  max-height:none;
+  overflow:hidden;
+  padding:0;
+}
+
+.pdf-preview-frame{
+  display:block;
+  width:100%;
+  height:clamp(360px, 72vh, 720px);
+  border:0;
+  border-radius:16px;
+  background:#ffffff;
+}
+
 .download-btn{
   display:inline-block;
   padding:16px 26px;
@@ -1190,6 +1205,7 @@ footer p{
     padding:18px 20px;
     flex-direction:column;
     gap:16px;
+    align-items:stretch;
   }
 
   .download-row h3{
@@ -1199,6 +1215,36 @@ footer p{
   .download-btn{
     padding:11px 18px;
     font-size:13px;
+    text-align:center;
+  }
+
+  .download-row-action{
+    width:100%;
+    justify-content:space-between;
+  }
+
+  .preview-panel{
+    padding:16px;
+    border-radius:18px;
+  }
+
+  .preview-header{
+    align-items:flex-start;
+  }
+
+  .preview-header h3{
+    font-size:18px;
+    line-height:1.35;
+  }
+
+  .preview-content{
+    border-radius:14px;
+  }
+
+  .pdf-preview-frame{
+    height:68svh;
+    min-height:390px;
+    border-radius:14px;
   }
 
   .resource-row{

@@ -113,8 +113,13 @@
 
     const title = document.getElementById('page-title');
 
+    function getFreshFileUrl(filePath) {
+      const separator = filePath.includes('?') ? '&' : '?';
+      return `${filePath}${separator}v=${Date.now()}`;
+    }
+
     function getCleanPreviewUrl(filePath) {
-      return `${filePath}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`;
+      return `${getFreshFileUrl(filePath)}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&page=1`;
     }
 
     // In a pure static site we can't reliably list server directory contents.
@@ -169,11 +174,14 @@
     });
 
     const downloadButton = document.createElement('a');
-    downloadButton.href = filePath;
+    downloadButton.href = getFreshFileUrl(filePath);
     // Default label; we will update it after we confirm the PDF exists.
     downloadButton.textContent = 'Checking...';
     downloadButton.className = 'download-btn';
     downloadButton.setAttribute('download', filePath);
+    downloadButton.addEventListener('click', () => {
+      downloadButton.href = getFreshFileUrl(filePath);
+    });
 
     // Preview should only be shown when file exists.
     // We'll disable preview button until the check completes.
@@ -216,9 +224,7 @@
       const iframe = document.createElement('iframe');
       iframe.src = getCleanPreviewUrl(filePath);
       iframe.title = syllabusTitle;
-      iframe.style.width = '100%';
-      iframe.style.height = '420px';
-      iframe.style.border = 'none';
+      iframe.className = 'pdf-preview-frame';
       iframe.loading = 'lazy';
 
       // If the PDF can't be loaded (missing file / blocked), show fallback.
