@@ -125,6 +125,15 @@
       return `${getFreshFileUrl(filePath)}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&page=1`;
     }
 
+    let currentPreviewObjectUrl = '';
+
+    function clearPreviewObjectUrl() {
+      if (currentPreviewObjectUrl) {
+        URL.revokeObjectURL(currentPreviewObjectUrl);
+        currentPreviewObjectUrl = '';
+      }
+    }
+
     // In a pure static site we can't reliably list server directory contents.
     // Instead, we check the existence of the exact PDF via a lightweight HEAD request.
     // If HEAD isn't supported, we fall back to a GET check.
@@ -216,33 +225,47 @@
     row.appendChild(action);
     table.appendChild(row);
 
-    function showPreview() {
+    async function showPreview() {
       previewTitle.textContent = `${syllabusTitle} Preview`;
 
       // Embed PDF in preview panel (better UX than fetching as text).
-      previewContent.innerHTML = '';
+      clearPreviewObjectUrl();
+      previewContent.innerHTML = '<span>Loading latest PDF preview...</span>';
       previewPanel.classList.remove('hidden');
       previewPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-      const iframe = document.createElement('iframe');
-      iframe.src = getCleanPreviewUrl(filePath);
-      iframe.title = syllabusTitle;
-      iframe.className = 'pdf-preview-frame';
-      iframe.loading = 'lazy';
+      try {
+        const response = await fetch(getFreshFileUrl(filePath), {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
 
-      // If the PDF can't be loaded (missing file / blocked), show fallback.
-      iframe.addEventListener('load', () => {
-        // Keep as-is: some browsers don't fire error reliably for PDFs.
-      });
+        if (!response.ok) {
+          throw new Error('PDF preview unavailable');
+        }
 
-      iframe.onerror = () => {
+        const blob = await response.blob();
+        currentPreviewObjectUrl = URL.createObjectURL(blob);
+
+        const iframe = document.createElement('iframe');
+        iframe.src = `${currentPreviewObjectUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&page=1`;
+        iframe.title = syllabusTitle;
+        iframe.className = 'pdf-preview-frame';
+        iframe.loading = 'lazy';
+
+        iframe.onerror = () => {
+          previewPanel.classList.remove('hidden');
+          previewContent.innerHTML = `<p style="color:#16a34a;font-weight:600;">${syllabusTitle} is not available soon.</p>`;
+        };
+
+        previewContent.innerHTML = '';
+        previewContent.appendChild(iframe);
+      } catch (error) {
         previewPanel.classList.remove('hidden');
         previewContent.innerHTML = `<p style="color:#16a34a;font-weight:600;">${syllabusTitle} is not available soon.</p>`;
-      };
-
-      // If browser blocks loading / can't render PDF, iframe can appear blank.
-      // The onerror handler above will cover most cases.
-      previewContent.appendChild(iframe);
+      }
 
       // Also show a fallback message immediately if file path is missing.
       // (This avoids a blank preview UI for missing PDFs.)
@@ -259,6 +282,7 @@
     }
 
     closePreviewBtn.addEventListener('click', () => {
+      clearPreviewObjectUrl();
       previewPanel.classList.add('hidden');
       // Clear iframe to avoid keeping it in memory.
       previewContent.innerHTML = '';

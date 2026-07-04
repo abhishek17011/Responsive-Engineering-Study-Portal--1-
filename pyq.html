@@ -534,7 +534,54 @@
       'pyq/jan-feb-2026/engineering-thermodynamics-pyq.pdf',
       'pyq/jan-feb-2026/fluid-mechanics-pyq.pdf',
       'pyq/jan-feb-2026/transformer-and-dc-machine-pyq.pdf',
-      'pyq/jan-feb-2026/yoga-pyq.pdf'
+      'pyq/jan-feb-2026/yoga-pyq.pdf',
+
+      'pyq/may-june-2026/applied-mathematics-i-pyq.pdf',
+      'pyq/may-june-2026/basics-of-electrical-engineering-pyq.pdf',
+      'pyq/may-june-2026/engineering-chemistry-pyq.pdf',
+      'pyq/may-june-2026/engineering-physics-pyq.pdf',
+      'pyq/may-june-2026/principal-of-programming-language-pyq.pdf',
+      'pyq/may-june-2026/engineering-mechanics-pyq.pdf',
+      'pyq/may-june-2026/engineering-graphics-pyq.pdf',
+      'pyq/may-june-2026/applied-mathematics-ii-pyq.pdf',
+      'pyq/may-june-2026/indian-knowledge-system-pyq.pdf', 
+      'pyq/may-june-2026/basics-of-electronics-engineering-pyq.pdf',
+      'pyq/may-june-2026/programming-for-problem-solving-pyq.pdf',
+      'pyq/may-june-2026/programming-for-problem-solving-mc-pyq.pdf',
+      'pyq/may-june-2026/basics-of-civil-engineering-pyq.pdf',
+      'pyq/may-june-2026/basics-of-electrical-and-electronics-engineering-pyq.pdf',
+      'pyq/may-june-2026/basics-of-mechanical-engineering-pyq.pdf',
+      'pyq/may-june-2026/design-thinking-pyq.pdf',
+      'pyq/may-june-2026/professional-communication-skills-pyq.pdf',
+
+      'pyq/may-june-2026/oop-using-java-pyq.pdf',
+      'pyq/may-june-2026/entrepreneurship-development-pyq.pdf',
+      'pyq/may-june-2026/machine-drawing-pyq.pdf',
+      'pyq/may-june-2026/surveying-pyq.pdf',
+      'pyq/may-june-2026/electrical-measuring-techniques-pyq.pdf',
+      'pyq/may-june-2026/environmental-studies-pyq.pdf',
+      'pyq/may-june-2026/universal-human-values-pyq.pdf',
+      'pyq/may-june-2026/discrete-mathematics-pyq.pdf',
+      'pyq/may-june-2026/electronics-devices-and-circuits-pyq.pdf',
+      'pyq/may-june-2026/manufacturing-processes-pyq.pdf',
+      'pyq/may-june-2026/strength-of-material-pyq.pdf',
+      'pyq/may-june-2026/indian-constitution-pyq.pdf',
+      'pyq/may-june-2026/risk-management-and-compliances-pyq.pdf',
+      'pyq/may-june-2026/data-structures-pyq.pdf',
+      'pyq/may-june-2026/engineering-thermodynamics-pyq.pdf',
+      'pyq/may-june-2026/fluid-mechanics-pyq.pdf',
+      'pyq/may-june-2026/transformer-and-dc-machine-pyq.pdf',
+      'pyq/may-june-2026/yoga-pyq.pdf',
+
+      'pyq/may-june-2026/ac-machines-pyq.pdf',
+      'pyq/may-june-2026/hindi-pyq.pdf',
+      'pyq/may-june-2026/marathi-pyq.pdf',
+      'pyq/may-june-2026/network-analysis-pyq.pdf',
+      'pyq/may-june-2026/operating-system-pyq.pdf',
+      'pyq/may-june-2026/theory-of-structure-pyq.pdf',
+      'pyq/may-june-2026/statistics-for-data-science-pyq.pdf',
+      'pyq/may-june-2026/metrology-and-quality-control-pyq.pdf',
+      'pyq/may-june-2026/introduction-to-ai-pyq.pdf'
 
 
 
@@ -555,6 +602,15 @@
 
     function getCleanPreviewUrl(filePath) {
       return `${getFreshFileUrl(filePath)}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&page=1`;
+    }
+
+    let currentPreviewObjectUrl = '';
+
+    function clearPreviewObjectUrl() {
+      if (currentPreviewObjectUrl) {
+        URL.revokeObjectURL(currentPreviewObjectUrl);
+        currentPreviewObjectUrl = '';
+      }
     }
 
     function createExamButton(exam) {
@@ -649,33 +705,53 @@
       previewPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    function showPreview(subject, filePath) {
+    async function showPreview(subject, filePath) {
       const previewPanel = document.getElementById('previewPanel');
       const previewTitle = document.getElementById('previewTitle');
       const previewContent = document.getElementById('previewContent');
 
       previewTitle.textContent = `${selectedExam} — ${subject} Preview`;
-      previewContent.innerHTML = '';
+      clearPreviewObjectUrl();
+      previewContent.innerHTML = '<span>Loading latest PDF preview...</span>';
       previewPanel.classList.remove('hidden');
       previewPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-      const iframe = document.createElement('iframe');
-      iframe.src = getCleanPreviewUrl(filePath);
-      iframe.title = `${subject} PYQ Preview`;
-      iframe.className = 'pdf-preview-frame';
-      iframe.loading = 'lazy';
+      try {
+        const response = await fetch(getFreshFileUrl(filePath), {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
 
-      iframe.onerror = () => {
+        if (!response.ok) {
+          throw new Error('PDF preview unavailable');
+        }
+
+        const blob = await response.blob();
+        currentPreviewObjectUrl = URL.createObjectURL(blob);
+
+        const iframe = document.createElement('iframe');
+        iframe.src = `${currentPreviewObjectUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&page=1`;
+        iframe.title = `${subject} PYQ Preview`;
+        iframe.className = 'pdf-preview-frame';
+        iframe.loading = 'lazy';
+
+        iframe.onerror = () => {
+          previewContent.innerHTML = `<span style="color: #16a34a; font-weight: 600;">${subject} PYQ is not available now.</span>`;
+        };
+
+        previewContent.innerHTML = '';
+        previewContent.appendChild(iframe);
+      } catch (error) {
         previewContent.innerHTML = `<span style="color: #16a34a; font-weight: 600;">${subject} PYQ is not available now.</span>`;
-      };
-
-      previewContent.appendChild(iframe);
-
+      }
     }
 
     function hidePreview() {
       const previewPanel = document.getElementById('previewPanel');
       const previewContent = document.getElementById('previewContent');
+      clearPreviewObjectUrl();
       previewPanel.classList.add('hidden');
       previewContent.innerHTML = '';
     }
@@ -694,6 +770,7 @@
 
       const previewPanel = document.getElementById('previewPanel');
       const previewContent = document.getElementById('previewContent');
+      clearPreviewObjectUrl();
       if (previewPanel) {
         previewPanel.classList.add('hidden');
       }

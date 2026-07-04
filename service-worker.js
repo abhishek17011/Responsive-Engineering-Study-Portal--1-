@@ -1,15 +1,20 @@
 self.addEventListener("install", event => {
-  console.log("Service Worker Installed");
-  // Ensure SW update becomes active quickly.
   self.skipWaiting();
 });
 
 self.addEventListener("activate", event => {
-  console.log("Service Worker Activated");
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    caches.keys()
+      .then(cacheNames => Promise.all(cacheNames.map(cacheName => caches.delete(cacheName))))
+      .then(() => self.registration.unregister())
+      .then(() => self.clients.matchAll())
+      .then(clients => {
+        clients.forEach(client => client.navigate(client.url));
+      })
+  );
 });
 
 self.addEventListener("fetch", event => {
-  // No caching strategies currently.
+  event.respondWith(fetch(event.request));
 });
 
