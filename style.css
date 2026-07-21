@@ -342,6 +342,102 @@ body.loaded{
   transform:translateY(1px);
 }
 
+/* ========================= */
+/* HOME PAGE WELCOME POPUP */
+/* ========================= */
+
+.welcome-popup{
+  position:fixed;
+  inset:0;
+  z-index:2100;
+  display:grid;
+  place-items:center;
+  padding:24px;
+  background:rgba(43,26,15,0.58);
+}
+
+.welcome-popup.hidden{
+  display:none;
+}
+
+.welcome-popup-card{
+  position:relative;
+  width:min(100%, 620px);
+  padding:38px;
+  border:1px solid rgba(249,115,22,0.32);
+  border-radius:24px;
+  background:var(--surface);
+  box-shadow:0 26px 70px rgba(43,26,15,0.30);
+}
+
+.welcome-popup-kicker{
+  margin-bottom:8px;
+  color:var(--accent-strong);
+  font-size:14px;
+  font-weight:800;
+  letter-spacing:0.7px;
+  text-transform:uppercase;
+}
+
+.welcome-popup-card h2{
+  margin-bottom:16px;
+  color:var(--text);
+  font-size:30px;
+}
+
+.welcome-popup-card p{
+  margin-bottom:14px;
+  color:var(--muted);
+  line-height:1.65;
+}
+
+.welcome-popup-card a{
+  color:var(--accent-strong);
+  font-weight:800;
+}
+
+.welcome-popup-close{
+  position:absolute;
+  top:12px;
+  right:16px;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  font-size:32px;
+  line-height:1;
+}
+
+.welcome-popup-btn{
+  margin-top:8px;
+  padding:12px 22px;
+  border:1px solid rgba(249,115,22,0.40);
+  border-radius:14px;
+  background:linear-gradient(135deg, var(--action-alt), var(--action));
+  color:#ffffff;
+  cursor:pointer;
+  font-weight:800;
+  font-size:15px;
+}
+
+.push-notification-controls{
+  margin:20px 0 4px;
+  padding:18px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:var(--surface-soft);
+}
+
+.push-notification-controls p{
+  margin-bottom:12px;
+}
+
+.push-notification-controls .notification-status{
+  margin:12px 0 0;
+  font-size:14px;
+  font-weight:700;
+}
+
 @media(max-width:600px){
   #cookie-consent-banner{
     flex-direction:column;
@@ -351,6 +447,18 @@ body.loaded{
   #cookie-consent-actions{
     width:100%;
     justify-content:flex-start;
+  }
+
+  .welcome-popup{
+    padding:16px;
+  }
+
+  .welcome-popup-card{
+    padding:32px 24px 26px;
+  }
+
+  .welcome-popup-card h2{
+    font-size:25px;
   }
 }
 

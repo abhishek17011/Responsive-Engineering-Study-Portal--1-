@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "engines": {
+    "node": "20.x"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.34.3",
+    "web-push": "^3.6.7"
+  }
+}

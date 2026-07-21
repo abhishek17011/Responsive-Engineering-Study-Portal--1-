@@ -1,21 +1,4 @@
 // =========================
-// CLEAR WEBSITE CACHE STORAGE
-// =========================
-
-if ('caches' in window) {
-  caches.keys()
-    .then(cacheNames => Promise.all(cacheNames.map(cacheName => caches.delete(cacheName))))
-    .catch(() => {});
-}
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations()
-    .then(registrations => Promise.all(registrations.map(registration => registration.unregister())))
-    .catch(() => {});
-}
-
-
-// =========================
 // MOBILE NAVBAR
 // =========================
 
