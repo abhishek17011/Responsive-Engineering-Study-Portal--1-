@@ -39,7 +39,14 @@
     <div class="download-card">
       <h1>Notes Download</h1>
       <p id="page-desc">Select the subject below to download the available notes file.</p>
-      <div id="resource-table" class="resource-table"></div>
+      <div id="resource-table" class="download-grid"></div>
+      <section id="previewPanel" class="preview-panel hidden">
+        <div class="preview-header">
+          <h3 id="previewTitle">Notes Preview</h3>
+          <button type="button" id="closePreviewBtn" class="close-btn" aria-label="Close preview">&times;</button>
+        </div>
+        <div id="previewContent" class="preview-content"></div>
+      </section>
       <a class="back-link" href="index.html#branches">← Back to Study Portal</a>
     </div>
   </section>
@@ -49,40 +56,35 @@
   <script>
     const resourceType = 'notes';
     const resourceLabel = 'Notes';
-    const data = {
-      "Applied Mathematics-I": { file: null },
-      "Basics of Electrical Engineering": { file: null },
-      "Engineering Physics": { file: null },
-      "Principal of Programming Language": { file: null },
-      "Design Thinking": { file: null },
-      "Professional Communication Skills": { file: null },
-      "Engineering Graphics": { file: null },
-      "Applied Mathematics-II": { file: null },
-      "Indian Knowledge System": { file: null },
-      "Engineering Chemistry": { file: null },
-      "Basics of Electronics Engineering": { file: null },
-      "Programming for Problem Solving": { file: null },
-      "Data Structures": { file: "notes/data-structures-notes.txt" },
-      DBMS: { file: "notes/dbms-notes.txt" },
-      "Object Oriented Programming": { file: null },
-      "Operating System": { file: null },
-      "Artificial Intelligence": { file: null },
-      "Python Programming": { file: null },
-      "Machine Learning Basics": { file: null },
-      "Data Analytics": { file: null },
-      "Network Analysis": { file: null },
-      "Digital Electronics": { file: null },
-      "Electrical Machines": { file: null },
-      "Signals and Systems": { file: null },
-      Surveying: { file: null },
-      "Building Materials": { file: null },
-      "Fluid Mechanics": { file: null },
-      "Structural Analysis": { file: null },
-      Thermodynamics: { file: "notes/thermodynamics-notes.txt" },
-      "Strength of Materials": { file: null },
-      "Manufacturing Processes": { file: null },
-      "Machine Drawing": { file: null }
-    };
+    // Add each PDF inside /notes using this pattern:
+    // notes/<subject-name>-notes.pdf
+    // Example: "Data Structures" -> notes/data-structures-notes.pdf
+    function slugify(value) {
+      return value.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    }
+
+    function getNotesFilePath(subject) {
+      return `notes/${slugify(subject)}-notes.pdf`;
+    }
+
+    function getFreshFileUrl(filePath) {
+      return `${filePath}?v=${Date.now()}`;
+    }
+
+    function getCleanPreviewUrl(filePath) {
+      return `${getFreshFileUrl(filePath)}#toolbar=0&navpanes=0&scrollbar=0&view=FitH&page=1`;
+    }
+
+    async function checkPdfExists(filePath) {
+      try {
+        const response = await fetch(filePath, { method: 'HEAD', cache: 'no-store' });
+        if (response.ok) return true;
+        const fallbackResponse = await fetch(filePath, { method: 'GET', cache: 'no-store' });
+        return fallbackResponse.ok;
+      } catch {
+        return false;
+      }
+    }
 
     const params = new URLSearchParams(location.search);
     const selectedSubject = params.get('subject');
@@ -91,6 +93,10 @@
     const selectedYear = params.get('year');
     const table = document.getElementById('resource-table');
     const desc = document.getElementById('page-desc');
+    const previewPanel = document.getElementById('previewPanel');
+    const previewTitle = document.getElementById('previewTitle');
+    const previewContent = document.getElementById('previewContent');
+    const closePreviewBtn = document.getElementById('closePreviewBtn');
     const semesterSubjects = {
       1: [
         "Applied Mathematics-I",
@@ -327,6 +333,15 @@
       }
     };
 
+    // Temporary 3rd-year subject names. Replace these with the official syllabus when available.
+    const branchYear3SemesterSubjects = {
+      cse: { 5: ["Advanced Data Structures (Mock)", "Database Management Systems (Mock)", "Web Technologies (Mock)", "Software Engineering (Mock)"], 6: ["Compiler Design (Mock)", "Cloud Computing (Mock)", "Information Security (Mock)", "Project Management (Mock)"] },
+      ai: { 5: ["Machine Learning Foundations (Mock)", "Data Mining (Mock)", "Computer Vision (Mock)", "AI Ethics (Mock)"], 6: ["Deep Learning (Mock)", "Natural Language Processing (Mock)", "Big Data Analytics (Mock)", "AI Project (Mock)"] },
+      eee: { 5: ["Power Systems (Mock)", "Control Systems (Mock)", "Microprocessors (Mock)", "Electrical Drives (Mock)"], 6: ["Power Electronics (Mock)", "Embedded Systems (Mock)", "Digital Signal Processing (Mock)", "EEE Project (Mock)"] },
+      civ: { 5: ["Geotechnical Engineering (Mock)", "Transportation Engineering (Mock)", "Structural Analysis (Mock)", "Environmental Engineering (Mock)"], 6: ["Foundation Engineering (Mock)", "Construction Management (Mock)", "Water Resources Engineering (Mock)", "Civil Project (Mock)"] },
+      mech: { 5: ["Heat Transfer (Mock)", "Machine Design (Mock)", "Theory of Machines (Mock)", "Industrial Engineering (Mock)"], 6: ["Automobile Engineering (Mock)", "Refrigeration and Air Conditioning (Mock)", "CAD/CAM (Mock)", "Mechanical Project (Mock)"] }
+    };
+
     function getSubjectsForNotesSemester(semester) {
       const semNum = Number(semester);
 
@@ -340,54 +355,101 @@
         return branchEntry[semNum] || semesterSubjects[semNum];
       }
 
+      if (semNum === 5 || semNum === 6) {
+        const branchEntry = branchYear3SemesterSubjects[selectedBranch] || branchYear3SemesterSubjects['cse'];
+        return branchEntry[semNum] || [];
+      }
+
       return semesterSubjects[semNum] || [];
     }
 
-    if (selectedSubject && data[selectedSubject]) {
-      desc.textContent = data[selectedSubject].file
-        ? `You selected ${selectedSubject}. Use the button below to download the ${resourceLabel}.`
-        : `You selected ${selectedSubject}. ${resourceLabel} file is coming soon.`;
+    if (selectedSubject) {
+      desc.textContent = `You selected ${selectedSubject}. The PDF will be available when it is added to the Notes folder.`;
     } else if (selectedSemester) {
       const semSubjects = getSubjectsForNotesSemester(selectedSemester);
       desc.textContent = `Showing Semester ${selectedSemester} ${resourceLabel} subjects.`;
     }
 
-    const visibleSubjects = selectedSubject && data[selectedSubject]
+    const visibleSubjects = selectedSubject
       ? [selectedSubject]
       : selectedSemester
         ? getSubjectsForNotesSemester(selectedSemester)
-        : Object.keys(data);
+        : Object.values(semesterSubjects).flat();
 
 
-    visibleSubjects.forEach(subject => {
+    function showPreview(subject, filePath) {
+      previewTitle.textContent = `${subject} Notes Preview`;
+      previewContent.innerHTML = '<span>Loading latest PDF preview...</span>';
+      previewPanel.classList.remove('hidden');
+      previewPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      const iframe = document.createElement('iframe');
+      iframe.src = getCleanPreviewUrl(filePath);
+      iframe.title = `${subject} Notes Preview`;
+      iframe.className = 'pdf-preview-frame';
+      iframe.loading = 'lazy';
+      iframe.onerror = () => {
+        previewContent.innerHTML = `<span class="download-row-error">${subject} Notes preview failed.</span>`;
+      };
+      previewContent.innerHTML = '';
+      previewContent.appendChild(iframe);
+    }
+
+    function createSubjectRow(subject) {
+      const filePath = getNotesFilePath(subject);
       const row = document.createElement('div');
-      row.className = 'resource-row' + (subject === selectedSubject ? ' selected' : '');
+      row.className = 'download-row' + (subject === selectedSubject ? ' selected' : '');
 
-      const name = document.createElement('div');
-      name.className = 'resource-name';
+      const info = document.createElement('div');
+      info.className = 'download-row-info';
+      const name = document.createElement('h3');
       name.textContent = subject;
+      const status = document.createElement('p');
+      status.textContent = 'Checking Notes PDF...';
+      info.append(name, status);
 
       const action = document.createElement('div');
-      action.className = 'resource-action';
+      action.className = 'download-row-action';
+      const previewButton = document.createElement('button');
+      previewButton.type = 'button';
+      previewButton.className = 'preview-btn';
+      previewButton.title = `Preview ${subject} Notes`;
+      previewButton.innerHTML = '&#128065;';
+      previewButton.disabled = true;
+      const downloadButton = document.createElement('a');
+      downloadButton.className = 'download-btn';
+      downloadButton.textContent = 'Checking...';
+      action.append(previewButton, downloadButton);
 
-      const item = data[subject];
-      if (!item || !item.file) {
-        const label = document.createElement('span');
-        label.className = 'download-missing';
-        label.textContent = 'Coming soon';
-        action.appendChild(label);
-      } else {
-        const button = document.createElement('a');
-        button.href = item.file;
-        button.textContent = `Download ${resourceLabel}`;
-        button.className = 'download-btn';
-        button.setAttribute('download', item.file);
-        action.appendChild(button);
-      }
-
-      row.appendChild(name);
+      row.appendChild(info);
       row.appendChild(action);
-      table.appendChild(row);
+      checkPdfExists(filePath).then((exists) => {
+        if (exists) {
+          status.textContent = `Preview or download Notes for ${subject}.`;
+          previewButton.disabled = false;
+          previewButton.addEventListener('click', () => showPreview(subject, filePath));
+          downloadButton.textContent = 'Download Notes';
+          downloadButton.href = getFreshFileUrl(filePath);
+          downloadButton.setAttribute('download', filePath);
+          downloadButton.addEventListener('click', () => { downloadButton.href = getFreshFileUrl(filePath); });
+        } else {
+          status.textContent = `${subject} Notes PDF is not available now.`;
+          status.className = 'download-row-error';
+          previewButton.textContent = '—';
+          downloadButton.textContent = 'Not Available';
+          downloadButton.href = '#';
+          downloadButton.setAttribute('aria-disabled', 'true');
+          downloadButton.addEventListener('click', (event) => event.preventDefault());
+        }
+      });
+      return row;
+    }
+
+    visibleSubjects.forEach(subject => table.appendChild(createSubjectRow(subject)));
+
+    closePreviewBtn.addEventListener('click', () => {
+      previewPanel.classList.add('hidden');
+      previewContent.innerHTML = '';
     });
   </script>
 

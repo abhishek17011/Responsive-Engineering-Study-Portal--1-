@@ -70,8 +70,8 @@
 
     // Supported params (used across this project):
     // - branch (cse|ai|eee|civ|mech)
-    // - year (1|2)
-    // - semester (1..4)  -> infer year
+    // - year (1|2|3)
+    // - semester (1..6)  -> infer year
     // - subject (string) -> keep for future mapping (currently only used to improve UX)
 
     const branchFromParam = params.get('branch');
@@ -79,12 +79,13 @@
     const semesterFromParam = params.get('semester');
 
     // Infer year from semester if year isn't directly provided.
-    // Year 1 => Semester 1-2, Year 2 => Semester 3-4
+    // Year 1 => Semester 1-2, Year 2 => Semester 3-4, Year 3 => Semester 5-6
     let resolvedYear = yearFromParam || '1';
 
     if (!yearFromParam && semesterFromParam) {
       const semNum = Number(semesterFromParam);
       if (semNum >= 3 && semNum <= 4) resolvedYear = '2';
+      else if (semNum >= 5 && semNum <= 6) resolvedYear = '3';
       else if (semNum >= 1 && semNum <= 2) resolvedYear = '1';
     }
 

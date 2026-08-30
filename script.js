@@ -85,6 +85,12 @@ function createSemesterButtons(branch, semester, year){
   `;
 }
 
+function createSemesterContent(branch, semester, year) {
+  // Every year uses the same semester-level entry point. The PYQ and Notes
+  // pages then render the branch-specific subject list for that semester.
+  return createSemesterButtons(branch, semester, year);
+}
+
 function createCommonSyllabusButton(branch, year){
   const branchName = branchLabels[branch] || 'Engineering';
   const yearLabel = year === 1 ? '1st' : year === 2 ? '2nd' : `${year}th`;
@@ -109,7 +115,12 @@ function createCommonSyllabusButton(branch, year){
   { id: 'ai2', branch: 'ai', year: 2, semesters: [3, 4] },
   { id: 'eee2', branch: 'eee', year: 2, semesters: [3, 4] },
   { id: 'civ2', branch: 'civ', year: 2, semesters: [3, 4] },
-  { id: 'mech2', branch: 'mech', year: 2, semesters: [3, 4] }
+  { id: 'mech2', branch: 'mech', year: 2, semesters: [3, 4] },
+  { id: 'cse3', branch: 'cse', year: 3, semesters: [5, 6] },
+  { id: 'ai3', branch: 'ai', year: 3, semesters: [5, 6] },
+  { id: 'eee3', branch: 'eee', year: 3, semesters: [5, 6] },
+  { id: 'civ3', branch: 'civ', year: 3, semesters: [5, 6] },
+  { id: 'mech3', branch: 'mech', year: 3, semesters: [5, 6] }
 ].forEach(({ id, branch, year, semesters }) => {
   const section = document.getElementById(id);
 
@@ -129,33 +140,37 @@ function createCommonSyllabusButton(branch, year){
   }
 
   const grids = section.querySelectorAll('.subject-grid:not(.common-syllabus)');
-  const titles = section.querySelectorAll('.semester-title');
 
-  if (!titles.length && grids.length) {
-    const firstTitle = document.createElement('h3');
-    firstTitle.className = 'semester-title';
-    firstTitle.textContent = `Semester ${semesters[0]}`;
-    grids[0].before(firstTitle);
+  function ensureSemesterTitle(grid, semester) {
+    const previousElement = grid.previousElementSibling;
+
+    if (previousElement && previousElement.classList.contains('semester-title')) {
+      previousElement.textContent = `Semester ${semester}`;
+      return;
+    }
+
+    const title = document.createElement('h3');
+    title.className = 'semester-title';
+    title.textContent = `Semester ${semester}`;
+    grid.before(title);
   }
 
   if (grids[0]) {
+    ensureSemesterTitle(grids[0], semesters[0]);
     grids[0].classList.add('semester-actions');
-    grids[0].innerHTML = createSemesterButtons(branch, semesters[0], year);
+    grids[0].innerHTML = createSemesterContent(branch, semesters[0], year);
   }
 
   if (!grids[1] && grids[0]) {
-    const secondTitle = document.createElement('h3');
-    secondTitle.className = 'semester-title';
-    secondTitle.textContent = `Semester ${semesters[1]}`;
-    grids[0].after(secondTitle);
-
     const secondGrid = document.createElement('div');
     secondGrid.className = 'subject-grid semester-actions';
-    secondGrid.innerHTML = createSemesterButtons(branch, semesters[1], year);
-    secondTitle.after(secondGrid);
+    secondGrid.innerHTML = createSemesterContent(branch, semesters[1], year);
+    grids[0].after(secondGrid);
+    ensureSemesterTitle(secondGrid, semesters[1]);
   } else if (grids[1]) {
+    ensureSemesterTitle(grids[1], semesters[1]);
     grids[1].classList.add('semester-actions');
-    grids[1].innerHTML = createSemesterButtons(branch, semesters[1], year);
+    grids[1].innerHTML = createSemesterContent(branch, semesters[1], year);
   }
 });
 

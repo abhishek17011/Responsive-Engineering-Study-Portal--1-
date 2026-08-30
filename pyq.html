@@ -125,7 +125,11 @@
       "May/June 2025": createExamSubjects('may-june-2025'),
       "Jan/Feb 2025": createExamSubjects('jan-feb-2025'),
       "Jan/Feb 2026": createExamSubjects('jan-feb-2026'),
-      "May/June 2026": createExamSubjects('may-june-2026')
+      "May/June 2026": createExamSubjects('may-june-2026'),
+      // Files can be added later under pyq/jan-feb-2027. Until then each
+      // subject is shown consistently as "Not Available" instead of hidden.
+      "Jan/Feb 2027": createExamSubjects('jan-feb-2027'),
+      "May/June 2027": createExamSubjects('may-june-2027')
 
     };
 
@@ -140,30 +144,18 @@
     const examControls = document.getElementById('exam-controls');
     const table = document.getElementById('resource-table');
 
-    const isSecondYear = selectedYear === '2' || selectedSemester === '3' || selectedSemester === '4';
+    // Keep the exam sessions in one place. This makes each semester's PYQ
+    // history explicit, including the new Jan/Feb and May/June 2027 sessions.
+    const examScheduleBySemester = {
+      1: ["Jan/Feb 2025", "May/June 2025", "Jan/Feb 2026", "May/June 2026", "Jan/Feb 2027"],
+      2: ["May/June 2025", "Jan/Feb 2026", "May/June 2026", "Jan/Feb 2027", "May/June 2027"],
+      3: ["Jan/Feb 2026", "May/June 2026", "Jan/Feb 2027"],
+      4: ["May/June 2026", "Jan/Feb 2027", "May/June 2027"],
+      5: ["Jan/Feb 2027"],
+      6: ["Jan/Feb 2027", "May/June 2027"]
+    };
 
-    // Semester rule requested:
-    // - Show Jan/Feb 2025 only for Semester 1.
-    // - Hide Jan/Feb 2025 for Semester 2+.
-    const isSemester1 = selectedSemester === '1';
-    const exams = isSecondYear
-      ? (selectedSemester === '4' ? ["May/June 2026"] : ["Jan/Feb 2026", "May/June 2026"])
-      : (() => {
-          const base = Object.keys(examData).filter(exam => {
-            if (exam === 'Jan/Feb 2025') return isSemester1;
-            return true;
-          });
-
-          // Requested ordering:
-          // Jan/Feb 2025 should appear above May/June 2025.
-          base.sort((a, b) => {
-            if (a === 'Jan/Feb 2025') return -1;
-            if (b === 'Jan/Feb 2025') return 1;
-            return 0;
-          });
-
-          return base;
-        })();
+    const exams = examScheduleBySemester[Number(selectedSemester)] || Object.keys(examData);
 
     const semesterSubjects = {
       1: [
@@ -452,6 +444,75 @@
       }
     };
 
+    // Temporary 3rd-year subject names. PYQ buttons will show unavailable until real files are uploaded.
+    const branchYear3SemesterSubjects = {
+      cse: { 
+        5: [
+          "Database Management System", 
+          "Software Testing and Quality Analysis", 
+          "Design and Analysis of Algorithm", 
+          "Data Warehousing and Data Mining",
+          "Theory Of Computation"
+        ], 
+        6: [
+          "Artificial Neural Network", 
+          "Data Science", 
+          "System Programming and Compiler Construction", 
+          "Project Management (Mock)"
+        ] },
+        ai: { 
+          5: [
+            "Database Management System", 
+            "Machine Learning", 
+            "Design and Analysis of Algorithm", 
+            "Operating System"
+          ], 
+          6: [
+            "Software Engg", 
+            "Natural Language Processing", 
+            "Neural Network and Deep Learning", 
+            "AI Project (Mock)"
+          ] },
+      eee: { 
+        5: [
+          "Power Systems (Mock)", 
+          "Control Systems (Mock)", 
+          "Microprocessors (Mock)", 
+          "Electrical Drives (Mock)"
+        ], 
+        6: [
+          "Power Electronics (Mock)", 
+          "Embedded Systems (Mock)", 
+          "Digital Signal Processing (Mock)", "EEE Project (Mock)"] },
+      civ: { 
+        5: [
+          "Geotechnical Engineering (Mock)", 
+          "Transportation Engineering (Mock)", 
+          
+          "Structural Analysis (Mock)", 
+          "Environmental Engineering (Mock)"
+        ], 
+        6: [
+          "Foundation Engineering (Mock)", 
+          "Construction Management (Mock)", 
+          "Water Resources Engineering (Mock)", 
+          "Civil Project (Mock)"
+        ] },
+      mech: { 
+        5: [
+          "Heat Transfer (Mock)", 
+          "Machine Design (Mock)", 
+          "Theory of Machines (Mock)", 
+          "Industrial Engineering (Mock)"
+        ], 
+        6: [
+          "Automobile Engineering (Mock)", 
+          "Refrigeration and Air Conditioning (Mock)", 
+          "CAD/CAM (Mock)", 
+          "Mechanical Project (Mock)"
+        ] }
+    };
+
     const branchKey = selectedBranch;
 
     function getSubjectsForSemester(semester) {
@@ -467,6 +528,11 @@
       if (semNum === 3 || semNum === 4) {
         const branchEntry = branchYear2SemesterSubjects[branchKey] || branchYear2SemesterSubjects['cse'];
         return branchEntry[semNum] || semesterSubjects[semNum];
+      }
+
+      if (semNum === 5 || semNum === 6) {
+        const branchEntry = branchYear3SemesterSubjects[branchKey] || branchYear3SemesterSubjects['cse'];
+        return branchEntry[semNum] || [];
       }
 
       return semesterSubjects[semNum] || semesterSubjects[semester];
