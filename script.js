@@ -11,6 +11,40 @@ menuBtn.addEventListener('click', () => {
   menuBtn.setAttribute('aria-expanded', String(!expanded));
 });
 
+// =========================
+// THIRD-YEAR ANNOUNCEMENT
+// =========================
+
+const notificationButton = document.getElementById('third-year-notification');
+const announcementPanel = document.getElementById('third-year-announcement');
+
+if (notificationButton && announcementPanel) {
+  function closeAnnouncement() {
+    announcementPanel.hidden = true;
+    notificationButton.setAttribute('aria-expanded', 'false');
+  }
+
+  notificationButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const isOpen = !announcementPanel.hidden;
+    announcementPanel.hidden = isOpen;
+    notificationButton.setAttribute('aria-expanded', String(!isOpen));
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!announcementPanel.hidden && !event.target.closest('.announcement-notification')) {
+      closeAnnouncement();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !announcementPanel.hidden) {
+      closeAnnouncement();
+      notificationButton.focus();
+    }
+  });
+}
+
 
 // =========================
 // SHOW YEAR CONTENT
