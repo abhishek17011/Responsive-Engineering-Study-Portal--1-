@@ -67,14 +67,19 @@
 
       <div class="nav-actions">
         <div class="announcement-notification">
-          <button id="third-year-notification" class="notification-btn" type="button" aria-label="View new announcement"
-            aria-expanded="false" aria-controls="third-year-announcement">
+          <button id="exam-notification" class="notification-btn" type="button" aria-label="View exam announcement"
+            aria-expanded="false" aria-controls="exam-announcement">
             <i class="fa-regular fa-bell" aria-hidden="true"></i>
             <span class="notification-indicator" aria-hidden="true"></span>
           </button>
-          <div id="third-year-announcement" class="announcement-panel" role="status" hidden>
-            <p class="announcement-title">🎉 Third Year Stuff Are Out Now!</p>
-            <p>Third-year study materials are now available. Check them out and start preparing!</p>
+          <div id="exam-announcement" class="announcement-panel" role="status" hidden>
+            <p class="announcement-title">All the best for your exams!</p>
+            <p>Wishing students of all years the very best. Stay confident, keep revising, and do your best!</p>
+            <div id="push-notification-controls" class="push-notification-controls" hidden>
+              <p>Installed the app on your home screen? Turn on notifications for new updates.</p>
+              <button id="enable-notifications" class="push-notification-btn" type="button">Enable notifications</button>
+              <p id="notification-status" class="notification-status" aria-live="polite"></p>
+            </div>
           </div>
         </div>
 
@@ -1062,32 +1067,6 @@
 
   <!-- JS -->
 
-  <div id="third-year-welcome-popup" class="welcome-popup" role="dialog" aria-modal="true"
-    aria-labelledby="welcome-popup-title">
-    <div class="welcome-popup-card">
-      <button id="close-welcome-popup" class="welcome-popup-close" type="button" aria-label="Close welcome message">&times;</button>
-      <p class="welcome-popup-kicker">Welcome to Engineer Vault</p>
-      <h2 id="welcome-popup-title">A New Academic Year Begins</h2>
-      <p>
-        As the new academic year begins, Engineer Vault is opening resources for 3rd-year students too.
-      </p>
-      <p>
-        Students from all branches are invited to share 3rd-year notes, syllabus, or other useful study material with us.
-        Your contribution will help students across every branch.
-      </p>
-      <p>
-        Have a suggestion for the website? Please email us at
-        <a href="mailto:engineervaultnep@gmail.com">engineervaultnep@gmail.com</a>.
-      </p>
-      <div id="push-notification-controls" class="push-notification-controls" hidden>
-        <p>Installed the app on your home screen? Turn on notifications for new updates.</p>
-        <button id="enable-notifications" class="welcome-popup-btn" type="button">Enable notifications</button>
-        <p id="notification-status" class="notification-status" aria-live="polite"></p>
-      </div>
-      <button id="welcome-popup-ok" class="welcome-popup-btn" type="button">Got it</button>
-    </div>
-  </div>
-
   <div id="cookie-consent-banner" class="cookie-consent" role="dialog" aria-live="polite">
     <div class="cookie-consent-text">
       This website uses cookies to improve your browsing experience.
@@ -1100,21 +1079,6 @@
   <script src="script.js"></script>
   <script src="cookie-consent.js"></script>
   <script src="push-notifications.js"></script>
-  <script>
-    (function () {
-      const popup = document.getElementById('third-year-welcome-popup');
-      const closeButton = document.getElementById('close-welcome-popup');
-      const okButton = document.getElementById('welcome-popup-ok');
-
-      function closePopup() {
-        popup.classList.add('hidden');
-      }
-
-      closeButton.addEventListener('click', closePopup);
-      okButton.addEventListener('click', closePopup);
-    }());
-  </script>
-
   <!-- Vercel Web Analytics -->
   <script>
     window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };

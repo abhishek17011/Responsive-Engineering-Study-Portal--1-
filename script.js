@@ -12,11 +12,11 @@ menuBtn.addEventListener('click', () => {
 });
 
 // =========================
-// THIRD-YEAR ANNOUNCEMENT
+// EXAM ANNOUNCEMENT
 // =========================
 
-const notificationButton = document.getElementById('third-year-notification');
-const announcementPanel = document.getElementById('third-year-announcement');
+const notificationButton = document.getElementById('exam-notification');
+const announcementPanel = document.getElementById('exam-announcement');
 
 if (notificationButton && announcementPanel) {
   function closeAnnouncement() {
